@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import axios from 'axios';
+//components
 import Landing from './components/Landing.jsx';
 import Main from './components/Main.jsx';
 import Create from './components/Create.jsx';
@@ -9,14 +11,28 @@ import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
 
 
+
 // could be refactored as a functional component if state not needed
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      // considering keeping an interim copy of a user recipe here in case they 
-      // navigate away from the create page before submitting
-    }
+    this.state ={
+      token: 0 || localStorage.getItem('Token'),
+      userId: 0 || sessionStorage.getItem('userId'),
+      username: '' || sessionStorage.getItem('username'),
+      password: ''
+    };
+    this.login = this.login.bind(this);
+  }
+
+  logout() {
+    this.setState({
+      token: 0,
+      username: '',
+      userId: 0
+    });
+    sessionStorage.clear();
+    localStorage.clear();
   }
 
   render () {
@@ -30,11 +46,10 @@ class App extends Component {
             <Route path='/main' component={Main} />
             <Route path='/recipes' component={Recipes} />
             <Route path='/create' component={Create} />
-            <Route path='/login' component={Login} />
+            <Route path='/login' render={(props)=> <Login {...props} login={this.login}/> } />
             <Route path='/signup' component={Signup} />
           </Switch>
       </Router>);
-      
   }
 }
 

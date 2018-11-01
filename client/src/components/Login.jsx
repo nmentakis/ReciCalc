@@ -1,5 +1,7 @@
 import React from 'react';
 
+import axios from  'axios';
+
 class Login extends React.Component {
   constructor (props) {
     super(props);
@@ -9,7 +11,28 @@ class Login extends React.Component {
     };
     this.onUserChange = this.onUserChange.bind(this);
     this.onPssChange = this.onPssChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this); 
+    this.login = this.login.bind(this);
+  }
+
+  login(usr, pss) {
+    axios.post('/auth/login', {username: usr, password: pss}) 
+    .then ((response)=> {
+      console.log(response);
+      this.setState({
+        username: response.data.user.username,
+        userId: response.data.user.id
+      });
+      alert('Logged In Successfully!');
+      sessionStorage.setItem('username', response.data.user.username);
+      sessionStorage.setItem('userId', response.data.user.id);
+      localStorage.setItem('Token', response.data.token);
+      this.props.history.push('/recipies');
+    })
+    .catch((err) => {
+      console.log(err, 'errroor')
+      alert('incorrect username or password')
+    });
   }
 
   onUserChange(e) {
@@ -24,7 +47,7 @@ class Login extends React.Component {
   }
 
   handleSubmit(e) {
-    this.props.login(this.state.username,this.state.password);
+    this.login(this.state.username,this.state.password);
     e.preventDefault();
   }
 

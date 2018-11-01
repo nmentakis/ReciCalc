@@ -38,12 +38,12 @@ passport.use(
 );
 
 passport.use(new JWTStrategy({
-  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJWT.fromUrlQueryParameter('Token'),
   secretOrKey   : 'Memes are cool'
 },
 function (jwtPayload, cb) {
   console.log('doing shit')
-  db.findUser(jwtPayload.username, jwtPayload.password, function(err, user){
+  db.findUser(jwtPayload.username, function(err, user){
     console.log('Callback ',user)
     if (!user || err) {
       console.log('Ran into issue: ',err, user);

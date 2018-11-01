@@ -4,6 +4,7 @@ class IngredientInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          token: localStorage.getItem('Token'),
           nameMatches: [],
           isValidating: false,
           currentOffset: -1,
@@ -34,14 +35,16 @@ class IngredientInput extends Component {
     }
 
     getNdbno(query){
-      axios.get('api/ingredients/usda', {
+      axios.get('user/ingredients/usda', {
         params: {
           searchTerm: `${query}`,
           // offset used so that not all results from api are returned at once
           page: this.state.currentOffset
-        }
+        },
+        headers: {"Authorization" : `Bearer ${this.state.token}`}
       })
       .then((data) => {
+        console.log(data);
         const list = data.data.map(item => {
           return {name : item.name, ndbno: item.ndbno}; 
         });
@@ -54,7 +57,7 @@ class IngredientInput extends Component {
 
     // search database to see if ingredient has already been saved there
     getFromDB(query){
-      axios.get('api/ingredients', {
+      axios.get(`user/ingredients/?Token=${this.state.token}`, {
         params: {
           searchTerm : `${query}`
         }
@@ -72,14 +75,13 @@ class IngredientInput extends Component {
           }
         })
         .catch(error => {
-          console.log('error: error while searching in database', error)
-        })
+          console.log('error: error while searching in database', error);
+        });
     }
 
     postToDatabase(selection){
       console.log(selection.ndbno)
-      axios.get(`api/ingredients/usda/${selection.ndbno}`, {
-      })
+      axios.get(`user/ingredients/usda/${selection.ndbno}/?Token=${this.state.token}`)
         .then(data => {
           console.log('success');
         })

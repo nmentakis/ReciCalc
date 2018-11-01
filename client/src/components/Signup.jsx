@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { withFormik, Form, Field } from 'formik';
 const Signup = () => (
   <div className="ui middle aligned center aligned grid">
@@ -49,25 +50,13 @@ const Signup = () => (
 );
 
 const SuperSubmit = withFormik({
-  mapPropsToValues({ username, password }) {
+  mapPropsToValues({ username, password, history }) {
     return {
       username: username || '',
       password: password || '',
+      history: history
     };
   },
-
-
-
-  onUserChange(e) {
-    this.setState({
-      username: e.target.value
-    });
-  }
-  onPssChange(e) {
-    this.setState({
-      password: e.target.value
-    });
-  }
   
   handleSubmit(value) {
     axios.post('/auth/signup', {username: value.username, password: value.password})
@@ -79,14 +68,10 @@ const SuperSubmit = withFormik({
         axios.post('/auth/login', {username: value.username, password: value.password}) 
         .then ((response)=> {
           console.log(response);
-          this.setState({
-            username: response.data.user.username,
-            userId: response.data.user.id
-          });
           sessionStorage.setItem('username', response.data.user.username);
           sessionStorage.setItem('userId', response.data.user.id);
           localStorage.setItem('Token', response.data.token);
-          this.props.history.push('/create');
+          value.history.push('/create');
         })
         .catch((err) => {
           console.log(err, 'errroor')

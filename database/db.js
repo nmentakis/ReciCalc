@@ -2,6 +2,7 @@ const env = require('../db_config.js').environment;
 const options = require('../knexfile')[env];
 const parse = require('../helpers/parsers.js');
 const knex = require('knex')(options);
+const bcrypt = require('bcrypt');
 
 // EXAMPLE DATABASE ACCESS FUNCTION:
 //
@@ -151,5 +152,19 @@ module.exports.addRecipe = function(clientRecipe) {
           .into('recipe_ingredients');
       })
       .then(() => outerRecipeId);
+  })
+}
+
+module.exports.findUser = (username, cb) => {
+  console.log('Inputed username: ',username)
+  knex.select('*')
+  .from('users')
+  .where({username})
+  .then((user) =>{
+    cb(null, user)
+  })
+  .catch(err => {
+    console.log('no users found')
+    cb('Failed', null)
   })
 }

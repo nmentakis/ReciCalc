@@ -5,6 +5,7 @@ const axios = require("axios");
 const qs = require("qs");
 const format = require("../helpers/formatCheckers.js");
 
+
 module.exports.recipes = {
   getList: (req, res) => {
     //query database for a list of short recipe descriptions and return them
@@ -171,25 +172,6 @@ module.exports.ingredients = {
   }
 };
 
-module.exports.auth = {
-  signupUser: (req, res) => {
-    console.log("Signup Called");
-    console.log("Req in signup: ", req.body);
-    res.end("Meme Signup");
-  },
-  login: (req, res) => {
-    console.log("Login Called");
-    console.log("Req in login: ", req.body);
-
-    res.end("login called");
-  },
-  logout: (req, res) => {
-    console.log("Logout Called");
-    console.log("Req in logout: ", req.body);
-
-    res.end("logout called");
-  }
-};
 
 //EXAMPLE DATABASE INTERACTION:
 //

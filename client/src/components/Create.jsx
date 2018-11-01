@@ -11,11 +11,10 @@ class Create extends Component {
     constructor () {
         super ();
         this.state = {
-          userId: 0 || sessionStorage.getItem('userId'),
-          title: null,
-          description: null,
-          ingredients: [],
-          instructions: [],
+            title: null,
+            description: null,
+            ingredients: [],
+            instructions: [],
         }
         // counter is used to provide a unique key to each instruction 
         this.counter = 0;
@@ -90,12 +89,6 @@ class Create extends Component {
         })}));
     }
 
-    updateUser(){
-      this.setState({
-        userId: this.props.passUserId
-      })
-    }
-
     postRecipe(){
       // make sure that recipe has all the desired information before submitting
       let isValidRecipe = true;
@@ -115,7 +108,6 @@ class Create extends Component {
       if (isValidRecipe) {
         const recipe = Object.assign({}, this.state);
         // database expects an array of strings for instructions
-        console.log(this.state, '<<< recipe')
         recipe.instructions = this.state.instructions.map(obj => obj.text);
         console.log(recipe);
         axios.post('api/recipes', {recipe})

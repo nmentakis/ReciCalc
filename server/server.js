@@ -1,19 +1,20 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require("body-parser");
-const router = require('./routes.js');
-
-
-let app = express();
+const user = require('./routes.js');
+const auth = require('./auth/auth.js');
+const passport = require('passport');
+const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/../client/dist'));
 
+require('./passport')
 
 // CONTROLLERS
 
-app.use('/api', router);
-
+app.use('/user', passport.authenticate('jwt', {session: false}), user);
+app.use('/auth', auth)
 
 // FALLBACK ROUTE
 // React Router is a Client Side Router (CSR)
@@ -27,8 +28,8 @@ app.get('/*', (req, res) => {
   })
 })
 
-let port = 3000;
-if(port === null || port === '') {
+let port = process.env.PORT;
+if (port == null || port === '') {
   port = 3000;
 }
 app.listen(port, () => {

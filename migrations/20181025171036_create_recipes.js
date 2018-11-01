@@ -6,7 +6,6 @@ exports.up = function(knex, Promise) {
     table.text('description');
     table.text('top_ingredients');
     table.json('instructions');
-    table.integer('user_id').references('id').inTable('users').notNull();
     table.timestamps();
   });
 };

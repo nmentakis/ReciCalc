@@ -12,10 +12,12 @@ class Header extends Component {
 
   render () {
       return (
-      <div>
-        <h3 id='header-logo' className='logo'>RECI-CALC</h3>
+      <div id='header'>
+        <h1 id='header-logo' className='logo'>RECI-CALC</h1>
+        <div id='nav-links'>
           <Link className='nav link' to='/create'>Create New Recipe</Link>
           <Link className='nav link' to='/recipes'>Recipes</Link>
+        </div>
       </div>)
   }
 }

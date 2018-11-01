@@ -5,6 +5,7 @@ const axios = require("axios");
 const qs = require("qs");
 const format = require("../helpers/formatCheckers.js");
 
+
 module.exports.recipes = {
   getList: (req, res) => {
     //query database for a list of short recipe descriptions and return them
@@ -40,11 +41,11 @@ module.exports.recipes = {
   },
   post: (req, res) => {
     //Store recipe in database
-    console.log('Incoming recipe request. Recipe:');
+    //console.log('Incoming recipe request. Recipe:');
     let recipe = req.body.recipe;
-    console.log(recipe, '<<<<<<<<------------ recepie');
-    if(format.isValidRecipe(recipe) === false) {
-      res.status(400).send('Malformed recipe');
+    //console.log(recipe);
+    if (format.isValidRecipe(recipe) === false) {
+      res.status(400).send("Malformed recipe");
     } else {
       db.addRecipe(recipe)
         .then(data => {
@@ -76,7 +77,6 @@ module.exports.ingredients = {
     } else {
       db.searchIngredientsByName(req.query.searchTerm)
         .then(ingredients => {
-          console.log(ingredients);
           res.status(200).json(ingredients);
         })
         .catch(err => {
@@ -92,7 +92,6 @@ module.exports.ingredients = {
     //also expect it may have 'page'
     //console.log('looking for USDA ingredients by name: ' + req.query.searchTerm)
     let offset = req.query.page ? req.query.page * 8 : 0;
-
 
     axios
       .get(`https://api.nal.usda.gov/ndb/search/?`, {
@@ -151,15 +150,13 @@ module.exports.ingredients = {
         if (data.data.errors) {
           res.status(500).send(data.data.errors.error);
         } else {
-          // console.log(data.data.report.foods[0], ' this is data <<<<<<<<<<<<<');
           db.addIngredient(data.data.report.foods[0])
             .then(() => res.status(200).send(data.data.report.foods[0]))
-
-            .catch((err) => {
-              console.log('ERROR: database ', err);
+            .catch(err => {
+              console.log("ERROR: ", err);
               res
                 .status(500)
-                .send('Data fetched, but not stored to database. Try again.')
+                .send("Data fetched, but not stored to database. Try again.");
             });
         }
       })
@@ -174,32 +171,6 @@ module.exports.ingredients = {
     res.status(404).send();
   }
 };
-
-module.exports.signup = {
-  addUser: function(req,res) {
-    db.addUser(req.body)
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      res.send(err);
-    });
-  }
-};
-module.exports.login = {
-  loginUser: function(req,res) {
-    db.checkUser(req.body)
-    .then(data => {
-      console.log(data, 'data from controller');
-      res.send(data);
-    })
-    .catch(err => {
-      console.log(err, 'err in controller');
-      res.send(err);
-    });
-  }
-};
-
 
 
 //EXAMPLE DATABASE INTERACTION:

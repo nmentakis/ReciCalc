@@ -47,5 +47,5 @@ const isValidRecipe = (recipe) => {
   return true;
 };
 
-module.exports.isValidReipe = isValidRecipe
+module.exports.isValidRecipe = isValidRecipe;
 module.exports.isValidNdbno = isValidNdbno;

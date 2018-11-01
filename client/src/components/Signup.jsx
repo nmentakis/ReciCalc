@@ -1,6 +1,5 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
-
 const Signup = () => (
   <div className="ui middle aligned center aligned grid">
     <div className="column">

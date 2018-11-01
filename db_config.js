@@ -11,5 +11,5 @@ module.exports.production = {
 }
 
 
-module.exports.environment = 'production'
+module.exports.environment = 'development';
   //Used in database/db.js to determine with part of knexfile.js to use

@@ -14,7 +14,4 @@ router.get('/ingredients/usda', controller.ingredients.getUsdaByName);
 router.get('/ingredients/usda/:ndbno', controller.ingredients.getUsdaIngredientInfo);
 router.post('/ingredients', controller.ingredients.post);
 
-router.post('/signup', controller.auth.signupUser);
-router.post('/login', controller.auth.login);
-router.get('/logout', controller.auth.logout);
 module.exports = router;

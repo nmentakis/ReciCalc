@@ -35,7 +35,6 @@ class Main extends React.Component {
         .catch((err) => console.log(err));
       }
 
-
   render() {
     return (
       <div id='main'>
@@ -56,5 +55,7 @@ class Main extends React.Component {
     )
   }
 } 
+
+
 
 export default Main;

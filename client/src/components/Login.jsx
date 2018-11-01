@@ -77,7 +77,7 @@ const FormikApp = withFormik({
         sessionStorage.setItem("username", response.data.user.username);
         sessionStorage.setItem("userId", response.data.user.id);
         localStorage.setItem("Token", response.data.token);
-        this.props.history.push("/recipies");
+        this.props.history.push("/recipes");
       })
       .catch(err => {
         console.log(err, "errroor");

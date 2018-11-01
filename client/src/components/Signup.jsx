@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import Login from './Login.jsx';
+
 class Signup extends React.Component {
   constructor(props) {
     super(props);
@@ -26,17 +28,33 @@ class Signup extends React.Component {
   }
   
   handleSubmit(e) {
-    axios.post('/api/signup', {username: this.state.username, password: this.state.password})
+    axios.post('/auth/signup', {username: this.state.username, password: this.state.password})
     .then ((response)=> {
       if (response.data.name) {
         alert('username already exists!');
       } else {
         alert('sign up successful!');
-        // this.props.history.push('/login')
+        axios.post('/auth/login', {username: this.state.username, password: this.state.password}) 
+        .then ((response)=> {
+          console.log(response);
+          this.setState({
+            username: response.data.user.username,
+            userId: response.data.user.id
+          });
+          alert('Logged In Successfully!');
+          sessionStorage.setItem('username', response.data.user.username);
+          sessionStorage.setItem('userId', response.data.user.id);
+          localStorage.setItem('Token', response.data.token);
+          this.props.history.push('/recipies');
+        })
+        .catch((err) => {
+          console.log(err, 'errroor')
+          alert('incorrect username or password')
+        });
       }
+      
     });
     e.preventDefault();
-  
   }
 
   render() {

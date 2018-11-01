@@ -1,9 +1,5 @@
 import React from 'react';
 
-const Signup = () => (
-  
-import Login from './Login.jsx';
-
 class Signup extends React.Component {
   constructor(props) {
     super(props);
@@ -76,6 +72,13 @@ class Signup extends React.Component {
                 <input type="text" name="email" placeholder="Username" />{' '}
                 {/*Fix Me */}
               </div>
+            </div>
+          </div>
+        </form>
+      </div>
+  </div>
   );
+    }
+  }
 
 export default Signup;

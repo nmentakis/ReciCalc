@@ -5,13 +5,13 @@ class RecipeList extends Component {
     constructor(){
         super();
         this.state = {
-          userId: 0 || sessionStorage.getItem('userId'),
           token: localStorage.getItem('Token'),
+          userId: 0 || sessionStorage.getItem('userId'),
           allRecipes: []
         }
     }
 
-  componentDidMount(){
+    componentDidMount(){
     // make a get call to database @ api/recipes to retrieve all user recipes and setState
     // placeholder below
   
@@ -43,7 +43,6 @@ class RecipeList extends Component {
     return (
       <div id='recipe-list'>
         <h3>Saved Recipes: </h3>
-        {console.log(this.state.allRecipes)}
         <ul>
         {/* render all user recipies in state */}
           {this.state.allRecipes.map(recipe => 

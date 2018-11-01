@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import axios from 'axios';
+
+
 //components
 import Landing from './components/Landing.jsx';
 import Main from './components/Main.jsx';
@@ -9,6 +10,7 @@ import Create from './components/Create.jsx';
 import Recipes from './components/Recipes.jsx';
 import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
+import NavBar from './components/NavBar.jsx';
 
 
 
@@ -22,6 +24,7 @@ class App extends Component {
       username: '' || sessionStorage.getItem('username'),
       password: ''
     };
+    this.logout = this.logout.bind(this);
   }
 
   logout() {
@@ -37,6 +40,10 @@ class App extends Component {
   render () {
     return (
       // if Browser Router were imported without an alias, this outermost wrapper would be 'BrowserRouter', not 'Router'
+      <div>
+      <div>
+        <NavBar logout={this.logout} />
+      </div>
       <Router>
           <Switch>
            <Route exact path = '/' render={() => <Landing />} />
@@ -48,7 +55,9 @@ class App extends Component {
             <Route path='/login' render={(props)=> <Login {...props} /> } />
             <Route path='/signup' component={Signup} />
           </Switch>
-      </Router>);
+      </Router>
+      </div>
+    );
   }
 }
 

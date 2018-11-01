@@ -7,6 +7,11 @@ import Recipes from './Recipes.jsx';
 const Main = () => (
   <div id='main'>
     {/* Header is outside of the switch so that it is always displayed (except on landing page) */}
+      <div>
+        <h1>
+          Welcome
+        </h1>
+      </div>
     <Header />
     <Switch>
       <Route path='/create' component={Create} />

@@ -99,7 +99,9 @@ module.exports.searchIngredientsByName = function(searchString) {
 module.exports.addIngredient = function(usdaIngredient) {
   //takes an ingredient object and stores it to the ingredients table
   //Assuming object is the usda return object's report.foods[0]
+  
   let dbIngredient = parse.usdaIngredientToDatabase(usdaIngredient);
+  console.log(dbIngredient, '<<<<<<<<<<<<<<<<<<<<< db');
   return knex('ingredients')
     .insert(dbIngredient)
     .catch(err => {
@@ -121,12 +123,15 @@ module.exports.addRecipe = function(clientRecipe) {
   //takes a recipe object, adds the basic data to the db, then adds recipe ingredients 
   let outerRecipeId = '';
   return knex.transaction(trx => {
+    // declare object inserted into recipe
     const dbRecipe = {
       name: clientRecipe.title,
       description: clientRecipe.description,
       top_ingredients: clientRecipe.topIngredients,
-      instructions: JSON.stringify(clientRecipe.instructions)
+      instructions: JSON.stringify(clientRecipe.instructions),
+      user_id: clientRecipe.userId
     };
+    // declare object inserted into ingrtedient
     const dbIngredientJunction = clientRecipe.ingredients.map((ing, index) =>  {
       return {
         food_no: parseInt(ing.ndbno),
@@ -144,7 +149,7 @@ module.exports.addRecipe = function(clientRecipe) {
         outerRecipeId = recipeId[0];
         //console.log('recipe ID: ', recipeId)
         dbIngredientJunction.forEach(entry => {
-          entry.recipe_id = recipeId[0]
+          entry.recipe_id = recipeId[0];
         })
         return trx
           .insert(dbIngredientJunction)
@@ -153,3 +158,34 @@ module.exports.addRecipe = function(clientRecipe) {
       .then(() => outerRecipeId);
   })
 }
+
+module.exports.addUser = function(user){
+  console.log(user, '<<<< db user');
+  let password = user.password;
+  let username = user.username;
+  return knex('users')
+  .insert([{ username: username, password: password }])
+  .then(res => console.log(res, ' res db'))
+  .catch(err => {
+    console.log(err, 'errr from db');
+    return err;
+  });
+};
+
+module.exports.checkUser = function(user){
+  console.log(user, '<<<< db user');
+  let password = user.password;
+  let username = user.username;
+  return knex
+      .select("*")
+      .from("users")
+      .where({username: username})
+      .then(user => {
+        console.log(user, 'user from db');
+        return user;
+      })
+      .catch(err => {
+        console.log("Didnt find User ");
+        return err;
+      });
+};

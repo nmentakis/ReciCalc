@@ -6,6 +6,7 @@ class RecipeList extends Component {
         super();
         this.state = {
           userId: 0 || sessionStorage.getItem('userId'),
+          token: localStorage.getItem('Token'),
           allRecipes: []
         }
     }
@@ -13,7 +14,9 @@ class RecipeList extends Component {
   componentDidMount(){
     // make a get call to database @ api/recipes to retrieve all user recipes and setState
     // placeholder below
-    axios.get('/api/recipes').then(response => {
+  
+    axios.get(`/user/recipes/?Token=${this.state.token}`)
+    .then(response => {
       let userRecipes= [];
       // checking for user recipes
       response.data.forEach(recipe => {

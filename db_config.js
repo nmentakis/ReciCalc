@@ -1,7 +1,7 @@
 module.exports.location = {
   host : 'localhost',
   user : 'postgres',
-  database : 'Recipes'
+  database : 'recipe'
 };
  
 module.exports.production = {

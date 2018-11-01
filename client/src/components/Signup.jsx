@@ -1,19 +1,61 @@
 import React from 'react';
-import axios from 'axios';
+import { withFormik, Form, Field } from 'formik';
+const Signup = () => (
+  <div className="ui middle aligned center aligned grid">
+    <div className="column">
+      <h2 className="ui image header">
+        <div className="content">Sign Up</div>
+      </h2>
+      <Form className="ui large form">
+        <div className="ui stacked secondary  segment">
+          <div className="field">
+            <div className="ui left icon input">
+              <i className="user icon" />
+              <Field
+                type="username"
+                name="username"
+                placeholder="Username"
+              />{' '}
+              {/*Fix Me */}
+            </div>
+          </div>
+          <div className="field">
+            <div className="ui left icon input">
+              <i className="lock icon" />
+              <Field
+                type="password"
+                name="password"
+                placeholder="Password"
+              />{' '}
+            </div>
+            <div className="ui left icon input">
+              <i className="lock icon" />
+              <input
+                type="password"
+                name="password"
+                placeholder="Confirm Password"
+              />
+            </div>
+          </div>
+          <div className="ui fluid large teal submit button">
+            <button type="submit">Sign Up</button>
+          </div>
+        </div>
 
-import Login from './Login.jsx';
+        <div className="ui error message" />
+      </Form>
+    </div>
+  </div>
+);
 
-class Signup extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: ''
+const SuperSubmit = withFormik({
+  mapPropsToValues({ username, password }) {
+    return {
+      username: username || '',
+      password: password || '',
     };
-    this.onUserChange = this.onUserChange.bind(this);
-    this.onPssChange = this.onPssChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  },
+
 
 
   onUserChange(e) {
@@ -27,14 +69,14 @@ class Signup extends React.Component {
     });
   }
   
-  handleSubmit(e) {
-    axios.post('/auth/signup', {username: this.state.username, password: this.state.password})
+  handleSubmit(value) {
+    axios.post('/auth/signup', {username: value.username, password: value.password})
     .then ((response)=> {
       if (response.data.name) {
         alert('username already exists!');
       } else {
         alert('sign up successful!');
-        axios.post('/auth/login', {username: this.state.username, password: this.state.password}) 
+        axios.post('/auth/login', {username: value.username, password: value.password}) 
         .then ((response)=> {
           console.log(response);
           this.setState({
@@ -53,26 +95,8 @@ class Signup extends React.Component {
       }
       
     });
-    e.preventDefault();
-  }
 
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <div className='user-input'>
-            <input type='username' value={this.state.username} onChange={this.onUserChange} placeholder='username' required/>
-          </div>
-          <div className='pss-input'>
-            <input type='password' value={this.state.password} onChange={this.onPssChange} placeholder='password'/>
-          </div>
-          <input className='sign-up-submit' type='submit' value='Submit'/>
-        </form>
-      </div>
-    )
-  }
+  },
+})(Signup);
 
-}
-
-
-export default Signup;
+export default SuperSubmit;

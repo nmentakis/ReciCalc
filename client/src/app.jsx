@@ -9,6 +9,7 @@ import Create from './components/Create.jsx';
 import Recipes from './components/Recipes.jsx';
 import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
+import NavBar from './components/NavBar.jsx';
 
 import { withFormik } from 'formik';
 
@@ -22,6 +23,7 @@ class App extends Component {
       username: '' || sessionStorage.getItem('username'),
       password: '',
     };
+    this.logout = this.logout.bind(this);
   }
 
   logout() {
@@ -37,18 +39,23 @@ class App extends Component {
   render() {
     return (
       // if Browser Router were imported without an alias, this outermost wrapper would be 'BrowserRouter', not 'Router'
+      <div>
+      <div>
+        <NavBar logout={this.logout} />
+      </div>
       <Router>
-        <Switch>
-          <Route exact path="/" render={() => <Landing />} />
-          {/* All links from landing page are to a url that will render the main component */}
-          {/* Main component is also a switch that will delegate  */}
-          <Route path="/main" component={Main} />
-          <Route path="/recipes" component={Recipes} />
-          <Route path="/create" component={Create} />
-          <Route path="/login" render={props => <Login {...props} />} />
-          <Route path="/signup" component={Signup} />
-        </Switch>
+          <Switch>
+           <Route exact path = '/' render={() => <Landing />} />
+            {/* All links from landing page are to a url that will render the main component */}
+            {/* Main component is also a switch that will delegate  */}
+            <Route path='/main' component={Main} />
+            <Route path='/recipes' component={Recipes} />
+            <Route path='/create' component={Create} />
+            <Route path='/login' render={(props)=> <Login {...props} /> } />
+            <Route path='/signup' component={Signup} />
+          </Switch>
       </Router>
+      </div>
     );
   }
 }

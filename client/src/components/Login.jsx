@@ -1,4 +1,5 @@
 import React from 'react';
+
 import axios from 'axios';
 import { withFormik, Form, Field } from 'formik';
 
@@ -38,7 +39,6 @@ const Login = ({ values, handleChange }) => (
           <button type="submit">Login</button>
           {/* </div> */}
         </div>
-
         <div className="ui error message" />
       </Form>
       <div className="ui message">
@@ -78,10 +78,12 @@ const FormikApp = withFormik({
         console.log(err, 'errroor');
         alert('incorrect username or password');
       });
+
   },
   handleSubmit(values) {
     this.login(values.username, values.password);
   },
 })(Login);
+
 
 export default FormikApp;

@@ -35,7 +35,7 @@ class IngredientInput extends Component {
     }
 
     getNdbno(query){
-      axios.get('user/ingredients/usda', {
+      axios.get(`user/ingredients/usda/?Token=${this.state.token}`, {
         params: {
           searchTerm: `${query}`,
           // offset used so that not all results from api are returned at once

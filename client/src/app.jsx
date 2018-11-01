@@ -22,7 +22,6 @@ class App extends Component {
       username: '' || sessionStorage.getItem('username'),
       password: ''
     };
-    this.login = this.login.bind(this);
   }
 
   logout() {
@@ -46,7 +45,7 @@ class App extends Component {
             <Route path='/main' component={Main} />
             <Route path='/recipes' component={Recipes} />
             <Route path='/create' component={Create} />
-            <Route path='/login' render={(props)=> <Login {...props} login={this.login}/> } />
+            <Route path='/login' render={(props)=> <Login {...props} /> } />
             <Route path='/signup' component={Signup} />
           </Switch>
       </Router>);

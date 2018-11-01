@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 
 class FullRecipe extends Component {
   constructor(props) {
       super(props);
       this.state = {
+        token: localStorage.getItem('Token')
       }
   }
 
   componentDidMount() {
     // make call to database for particular recipe referencing {this.props.match.params.id} to retrieve recipe by id number
     // recipe object returned in format below. hardcoding example for testing
-    Axios.get(`/api/recipes/${this.props.match.params.id}`).then(response => {
+    axios.get(`/user/recipes/${this.props.match.params.id}/?Token=${this.state.token}`).then(response => {
       console.log('successful fullrecipe.jsx request',response.data);
       this.setState({
         recipe: {

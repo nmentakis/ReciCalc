@@ -15,7 +15,7 @@ class RecipeList extends Component {
     // make a get call to database @ api/recipes to retrieve all user recipes and setState
     // placeholder below
   
-    axios.get('/user/recipes', { headers: {"Authorization" : `Bearer ${this.state.token}`} })
+    axios.get(`/user/recipes/?Token=${this.state.token}`)
     .then(response => {
       let userRecipes= [];
       // checking for user recipes

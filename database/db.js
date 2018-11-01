@@ -2,6 +2,7 @@ const env = require('../db_config.js').environment;
 const options = require('../knexfile')[env];
 const parse = require('../helpers/parsers.js');
 const knex = require('knex')(options);
+const bcrypt = require('bcrypt');
 
 // EXAMPLE DATABASE ACCESS FUNCTION:
 //
@@ -159,33 +160,18 @@ module.exports.addRecipe = function(clientRecipe) {
   })
 }
 
-module.exports.addUser = function(user){
-  console.log(user, '<<<< db user');
-  let password = user.password;
-  let username = user.username;
-  return knex('users')
-  .insert([{ username: username, password: password }])
-  .then(res => console.log(res, ' res db'))
-  .catch(err => {
-    console.log(err, 'errr from db');
-    return err;
-  });
-};
 
-module.exports.checkUser = function(user){
-  console.log(user, '<<<< db user');
-  let password = user.password;
-  let username = user.username;
-  return knex
-      .select("*")
-      .from("users")
-      .where({username: username})
-      .then(user => {
-        console.log(user, 'user from db');
-        return user;
-      })
-      .catch(err => {
-        console.log("Didnt find User ");
-        return err;
-      });
-};
+module.exports.findUser = (username, cb) => {
+  console.log('Inputed username: ',username)
+  knex.select('*')
+  .from('users')
+  .where({username})
+  .then((user) =>{
+    cb(null, user)
+  })
+  .catch(err => {
+    console.log('no users found')
+    cb('Failed', null)
+  })
+}
+

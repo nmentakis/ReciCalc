@@ -5,6 +5,7 @@ const axios = require("axios");
 const qs = require("qs");
 const format = require("../helpers/formatCheckers.js");
 
+
 module.exports.recipes = {
   getList: (req, res) => {
     //query database for a list of short recipe descriptions and return them
@@ -175,30 +176,7 @@ module.exports.ingredients = {
   }
 };
 
-module.exports.signup = {
-  addUser: function(req,res) {
-    db.addUser(req.body)
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      res.send(err);
-    });
-  }
-};
-module.exports.login = {
-  loginUser: function(req,res) {
-    db.checkUser(req.body)
-    .then(data => {
-      console.log(data, 'data from controller');
-      res.send(data);
-    })
-    .catch(err => {
-      console.log(err, 'err in controller');
-      res.send(err);
-    });
-  }
-};
+
 
 
 

@@ -2,9 +2,6 @@ const router = require('express').Router();
 const controller = require('./controller.js');
 
 
-router.post('/signup', controller.signup.addUser);
-router.post('/login', controller.login.loginUser);
-
 router.get('/recipes', controller.recipes.getList);
 router.get('/recipes/:recipeId', controller.recipes.getOne);
 router.post('/recipes', controller.recipes.post);

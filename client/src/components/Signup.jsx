@@ -56,7 +56,7 @@ class Signup extends React.Component {
 
   render() {
     return (
-  <div className="ui middle aligned center aligned grid">
+      <div className="ui middle aligned center aligned grid">
       <div className="column">
         <h2 className="ui image header">
           <div className="content">Sign Up</div>
@@ -73,11 +73,30 @@ class Signup extends React.Component {
                 {/*Fix Me */}
               </div>
             </div>
+            <div className="field">
+              <div className="ui left icon input">
+                <i className="lock icon" />
+                <input type="password" name="password" placeholder="Password" />
+              </div>
+              <div className="ui left icon input">
+                <i className="lock icon" />
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Confirm Password"
+                />
+              </div>
+            </div>
+            <div className="ui fluid large teal submit button">Sign Up</div>
           </div>
+  
+          <div className="ui error message" />
         </form>
       </div>
-  </div>
+    </div>
   );
+  
+
     }
   }
 

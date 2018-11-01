@@ -1,6 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 
+const Signup = () => (
+  
 import Login from './Login.jsx';
 
 class Signup extends React.Component {
@@ -59,21 +60,22 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <div className='user-input'>
-            <input type='username' value={this.state.username} onChange={this.onUserChange} placeholder='username' required/>
-          </div>
-          <div className='pss-input'>
-            <input type='password' value={this.state.password} onChange={this.onPssChange} placeholder='password'/>
-          </div>
-          <input className='sign-up-submit' type='submit' value='Submit'/>
-        </form>
-      </div>
-    )
-  }
-
-}
-
+  <div className="ui middle aligned center aligned grid">
+      <div className="column">
+        <h2 className="ui image header">
+          <div className="content">Sign Up</div>
+        </h2>
+        <form
+          action="https://s.codepen.io/voltron2112/debug/PqrEPM?"
+          method="get"
+          className="ui large form">
+          <div className="ui stacked secondary  segment">
+            <div className="field">
+              <div className="ui left icon input">
+                <i className="user icon" />
+                <input type="text" name="email" placeholder="Username" />{' '}
+                {/*Fix Me */}
+              </div>
+  );
 
 export default Signup;

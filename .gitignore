@@ -3,5 +3,7 @@ config.js
 api_config.js
 package-lock.js
 client/dist/theme
+.eslint.js
+
 client/dist/bundle.js
 .DS_Store

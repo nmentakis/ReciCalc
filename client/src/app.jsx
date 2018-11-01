@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import Recipes from './components/Recipes.jsx';
 import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
 
+import { withFormik } from 'formik';
 
 
 // could be refactored as a functional component if state not needed
@@ -34,10 +35,11 @@ class App extends Component {
     localStorage.clear();
   }
 
-  render () {
+  render() {
     return (
       // if Browser Router were imported without an alias, this outermost wrapper would be 'BrowserRouter', not 'Router'
       <Router>
+
           <Switch>
            <Route exact path = '/' render={() => <Landing />} />
             {/* All links from landing page are to a url that will render the main component */}

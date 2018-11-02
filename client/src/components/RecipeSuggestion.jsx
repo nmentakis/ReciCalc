@@ -6,9 +6,7 @@ const RecipeSuggestion = (props) => {
     <Header as='h2'>Recipe Suggestion</Header>
     <Header as='h4'>Chicken Recipe</Header>
     <p>
-      <ul>
-    {/* {props.ingredients.map((ingredient) => <li>ingredient</li>)} */}
-      </ul>
+
     </p>
   </Container>)
 

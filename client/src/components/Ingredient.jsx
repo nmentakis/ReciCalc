@@ -20,7 +20,7 @@ class Ingredient extends React.Component {
       </Grid.Column>
       <Grid.Column floated='right' width={3}>
 
-        <RecipeSuggestion/>
+        {/* <RecipeSuggestion/> */}
         {/* <Image src='https://react.semantic-ui.com/images/wireframe/centered-paragraph.png' /> */}
       </Grid.Column>
     </Grid.Row>

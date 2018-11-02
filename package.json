@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "heroku-postbuild": "webpack -p",
-    "react-dev": "webpack -d --watch",
+    "react-dev": "webpack -d",
     "server-dev": "nodemon server/server.js"
   },
   "author": "MiLC-men",

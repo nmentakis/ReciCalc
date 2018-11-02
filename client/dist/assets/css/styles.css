@@ -19,6 +19,15 @@ body > .grid {
 }
 
 .fa-book-open {
-  color:white
+  color: white;
+}
 
+/* Create Page */
+
+/* #create * {
+  color: red;
+} */
+
+input:placeholder-shown {
+  color: black;
 }

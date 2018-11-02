@@ -25,9 +25,10 @@ class Ingredient extends React.Component {
   
   updateSelection(name){
     // keep track of which option user has selected from nameMatches array
-    console.log(name)
     let updateObject = this.state.nameMatches.filter(nameMatch => nameMatch.name === name)[0];
-    console.log(this.state.ingredients)
+    // if (this.state.quantity === "") {
+    //   throw alert('Please enter an amount!')
+    // }
     updateObject['quantity'] = this.state.quantity
     let newIngredient = this.state.ingredients.concat(updateObject)
     this.setState({
@@ -35,9 +36,8 @@ class Ingredient extends React.Component {
       quantity: '',
       search: '',
       nameMatches: [],
-    });
+    })
   }
-  
   
   
   handleSubmit(e) {
@@ -108,7 +108,7 @@ class Ingredient extends React.Component {
       <Grid.Column width={6}>
       <h3 className='ingredient-input'>Your Ingredients!</h3>
       <ul>
-      {this.state.ingredients.map((ingredient, i) => <li key={i}>{ingredient.name} : {ingredient.quantity}grams</li>)}
+      {this.state.ingredients.map((ingredient, i) => <li key={i}>{ingredient.name}  {ingredient.quantity ? ' : ' + ingredient.quantity + ' grams' : ''}</li>)}
       </ul>
       </Grid.Column>
       <Grid.Column floated='right' width={3}>

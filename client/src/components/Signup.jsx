@@ -50,6 +50,13 @@ const Signup = () => (
 
         <div className="ui error message" />
       </Form>
+      <div className="ui message">
+        Already signed up?
+        <a href="/login">
+          {'  '}
+          Login
+        </a>
+      </div>
     </div>
   </div>
 );

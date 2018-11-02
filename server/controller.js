@@ -4,6 +4,8 @@ const db = require("../database/db.js");
 const axios = require("axios");
 const qs = require("qs");
 const format = require("../helpers/formatCheckers.js");
+const bcrypt = require('bcrypt');
+
 
 
 module.exports.recipes = {
@@ -50,11 +52,11 @@ module.exports.recipes = {
   },
   post: (req, res) => {
     //Store recipe in database
-    console.log('Incoming recipe request. Recipe:');
+    //console.log('Incoming recipe request. Recipe:');
     let recipe = req.body.recipe;
-    console.log(recipe, '<<<<<<<<------------ recepie');
-    if(format.isValidRecipe(recipe) === false) {
-      res.status(400).send('Malformed recipe');
+    //console.log(recipe);
+    if (format.isValidRecipe(recipe) === false) {
+      res.status(400).send("Malformed recipe");
     } else {
       db.addRecipe(recipe)
         .then(data => {
@@ -87,7 +89,6 @@ module.exports.ingredients = {
     } else {
       db.searchIngredientsByName(req.query.searchTerm)
         .then(ingredients => {
-          console.log(ingredients);
           res.status(200).json(ingredients);
         })
         .catch(err => {
@@ -103,7 +104,6 @@ module.exports.ingredients = {
     //also expect it may have 'page'
     //console.log('looking for USDA ingredients by name: ' + req.query.searchTerm)
     let offset = req.query.page ? req.query.page * 8 : 0;
-
 
     axios
       .get(`https://api.nal.usda.gov/ndb/search/?`, {
@@ -162,15 +162,13 @@ module.exports.ingredients = {
         if (data.data.errors) {
           res.status(500).send(data.data.errors.error);
         } else {
-          // console.log(data.data.report.foods[0], ' this is data <<<<<<<<<<<<<');
           db.addIngredient(data.data.report.foods[0])
             .then(() => res.status(200).send(data.data.report.foods[0]))
-
-            .catch((err) => {
-              console.log('ERROR: database ', err);
+            .catch(err => {
+              console.log("ERROR: ", err);
               res
                 .status(500)
-                .send('Data fetched, but not stored to database. Try again.')
+                .send("Data fetched, but not stored to database. Try again.");
             });
         }
       })
@@ -186,10 +184,56 @@ module.exports.ingredients = {
   }
 };
 
+module.exports.auth = {
+  changeUsername: (req, res) => {
+    newUsername = req.body.newUsername;
+    username = req.body.username;
+    password = req.body.password;
+    console.log({username, newUsername, password})
 
+    db.findUser(username, (err, user) => {
+      if(err){
+        console.log('something went up while changing username');
+        res.end()
+      }
+      bcrypt.compare(password, user[0].password, (err, res) => {
+        if(res){
+          console.log('found user!', res)
+          //change username here.
+          db.changeUsername(user[0].username, newUsername, (res)=>{
+            console.log(res)
+          })
+        }
+      })
+    })
+    res.end();
+  },
+  changePassword: (req, res) => {
+    newPassword = req.body.newPassword;
+    password = req.body.password;
+    username = req.body.username;
 
+    db.findUser(username, (err, user) => {
+      if(err){
+        console.log('something went up while changing username');
+        res.end()
+      }
+      bcrypt.compare(password, user[0].password, (err, res) => {
+        if(res){
+          console.log('found user!', res)
+          //change password here.
+          db.changePassword(username, newPassword, (res) =>{
+            console.log('changed Password')
 
-
+            console.log(res);
+          })
+        }
+      })
+    })
+    console.log({newPassword, password, username})
+    res.end();
+  }
+}
 //EXAMPLE DATABASE INTERACTION:
 //
 //confirmAccess = function(req, res) => {

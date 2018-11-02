@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Menu } from 'semantic-ui-react';
+import { Dropdown, Icon, Menu } from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 
 class NavBar extends React.Component {
@@ -44,12 +44,13 @@ class NavBar extends React.Component {
           {/* <Menu.Item>
             <Input icon='search' placeholder='Search...' />
           </Menu.Item> */}
-          <Menu.Item
-            name='logout'
-            active={activeItem === 'logout'}
-            onClick={this.handleItemClick}
-            href="/"
-          />
+          <Dropdown icon='cog' item>
+          <Dropdown.Menu>
+            {/* <Dropdown.Header>Text Size</Dropdown.Header> */}
+            <Dropdown.Item href="/account">account</Dropdown.Item>
+            <Dropdown.Item name='logout' active={activeItem === 'logout'} onClick={this.handleItemClick} href="/">logout</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
         </Menu.Menu>
       </Menu>
     )

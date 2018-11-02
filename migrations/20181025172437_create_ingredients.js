@@ -1,4 +1,4 @@
-  
+
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('ingredients', function(table) {
     table.integer('ndbno').primary();

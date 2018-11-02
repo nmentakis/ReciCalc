@@ -7,3 +7,18 @@ body > .grid {
 .column {
   max-width: 450px !important;
 }
+
+/* Landing Fixes */
+
+.landing {
+  color: white;
+}
+
+.landing:hover {
+  color: white;
+}
+
+.fa-book-open {
+  color:white
+
+}

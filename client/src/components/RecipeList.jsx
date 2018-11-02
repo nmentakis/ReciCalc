@@ -54,7 +54,7 @@ class RecipeList extends Component {
     })
     .catch(error => {
       console.log('error: ', error);
-    })
+    });
   }
 
 

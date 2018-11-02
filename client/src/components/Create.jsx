@@ -92,6 +92,12 @@ class Create extends Component {
         })}));
     }
 
+    updateUser(){
+      this.setState({
+        userId: this.props.passUserId
+      })
+    }
+
     postRecipe(){
       // make sure that recipe has all the desired information before submitting
       let isValidRecipe = true;

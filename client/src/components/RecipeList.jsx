@@ -79,7 +79,7 @@ class RecipeList extends Component {
   render() {
     return (
       <Card.Group itemsPerRow={3}>
-      {this.state.allRecipes.map(recipe => <RecipeListItem recipe={recipe} deleteOne={this.deleteOne}/>)}
+      {this.state.allRecipes.map((recipe, index) => (<RecipeListItem key={index} recipe={recipe} deleteOne={this.deleteOne}/>))}
       </Card.Group>
     )
   }

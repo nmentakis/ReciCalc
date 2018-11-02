@@ -10,6 +10,7 @@ import Recipes from './components/Recipes.jsx';
 import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
 import NavBar from './components/NavBar.jsx';
+import Account from './components/Account.jsx';
 
 import { withFormik } from 'formik';
 import Ingredient from './components/Ingredient.jsx';
@@ -79,6 +80,7 @@ class App extends Component {
               <Route path='/main' component={Main} />
               <Route path='/recipes' component={Recipes} />
               <Route path='/create' component={Create} />
+              <Route path='/account' component={Account} />
               <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
               <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
               <Route path='/ingredients' component={Ingredient}/>

@@ -4,7 +4,7 @@ import { withFormik, Form, Field } from 'formik';
 const Signup = () => (
   <div className="ui middle aligned center aligned grid">
     <div className="column">
-      <h2 className="ui image header">
+      <h2 className="ui header">
         <div className="content">Sign Up</div>
       </h2>
       <Form className="ui large form">
@@ -38,10 +38,14 @@ const Signup = () => (
               />
             </div>
           </div>
-          <div className="ui fluid large teal submit button">
-            <button type="submit">Sign Up</button>
-          </div>
+          <button
+            className="ui fluid large teal submit button"
+            type="submit"
+            href="/signup">
+            Sign Up
+          </button>
         </div>
+        {/* </div> */}
 
         <div className="ui error message" />
       </Form>

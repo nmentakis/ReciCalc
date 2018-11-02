@@ -45,9 +45,10 @@ class RecipeList extends Component {
   }
 
 
-// componentDidUpdate(){
-//   this.getSavedRecipes();
-// }
+componentDidUpdate(){
+  this.getSavedRecipes();
+}
+
   deleteOne(recipeId){
     const post = {
       url: `user/recipes/delete/?Token=${this.state.token}`,

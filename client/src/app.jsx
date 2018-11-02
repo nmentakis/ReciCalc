@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
 //components
 import Landing from './components/Landing.jsx';
@@ -26,6 +26,7 @@ class App extends Component {
     };
     this.logout = this.logout.bind(this);
     this.renderNav = this.renderNav.bind(this);
+    this.renderRoutes = this.renderRoutes.bind(this);
     this.setUser = this.setUser.bind(this);
   }
 
@@ -46,20 +47,37 @@ class App extends Component {
     });
   }
 
-  renderNav() {
+
+
+  renderNav () {
     if (this.state.token) {
-      return (<NavBar logout={this.logout} />)
+      return (<NavBar logout={this.logout}/>)
     } else {
-      console.log('hi')
+      return 
+    }
+  }
+  renderRoutes () {
+    if (this.state.token) {
+      return (
+        <div> 
+            <Route path='/main' component={Main} />
+            <Route path='/recipes' component={Recipes} />
+            <Route path='/create' component={Create} />
+            <Route path='/account' component={Account} />
+        </div>
+      )
+    } else {
+      return (
+        <Router>
+          <Switch>
+            <Route exact path = '/' render={() => <Landing />} />
+          </Switch>
+        </Router>
+      )
     }
   }
 
   logout() {
-    this.setState({
-      token: 0,
-      username: '',
-      userId: 0,
-    });
     sessionStorage.clear();
     localStorage.clear();
   }
@@ -73,19 +91,16 @@ class App extends Component {
           {this.renderNav()}
         </div>
         <Router>
-            <Switch>
-            <Route exact path = '/' render={() => <Landing />} />
-              {/* All links from landing page are to a url that will render the main component */}
-              {/* Main component is also a switch that will delegate  */}
-              <Route path='/main' component={Main} />
-              <Route path='/recipes' component={Recipes} />
-              <Route path='/create' component={Create} />
-              <Route path='/account' component={Account} />
-              <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
-              <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
-            </Switch>
+          <Switch>
+            <Route exact path = '/' render={() => <Landing />} /> 
+            <Route path='/recipes' render={()=> localStorage.getItem('Token') ? ( <Recipes/> ) : ( <Redirect to="/login"/> )} />
+            <Route path='/create' render={()=>  localStorage.getItem('Token') ? ( <Create/> ) : ( <Redirect to="/login"/> )} />
+            <Route path='/account' render={()=> localStorage.getItem('Token') ? ( <Account/> ) : ( <Redirect to="/login"/> )} />
+            <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
+            <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
+          </Switch>
         </Router>
-
+          
       </div>
     );
   }

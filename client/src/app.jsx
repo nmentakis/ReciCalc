@@ -56,26 +56,6 @@ class App extends Component {
       return 
     }
   }
-  renderRoutes () {
-    if (this.state.token) {
-      return (
-        <div> 
-            <Route path='/main' component={Main} />
-            <Route path='/recipes' component={Recipes} />
-            <Route path='/create' component={Create} />
-            <Route path='/account' component={Account} />
-        </div>
-      )
-    } else {
-      return (
-        <Router>
-          <Switch>
-            <Route exact path = '/' render={() => <Landing />} />
-          </Switch>
-        </Router>
-      )
-    }
-  }
 
   logout() {
     sessionStorage.clear();
@@ -98,6 +78,7 @@ class App extends Component {
             <Route path='/account' render={()=> localStorage.getItem('Token') ? ( <Account/> ) : ( <Redirect to="/login"/> )} />
             <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
             <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
+            <Route path='/ingredients' render={()=> localStorage.getItem('Token') ? ( <Ingredient/> ) : ( <Redirect to="/login"/> )} />
           </Switch>
         </Router>
           

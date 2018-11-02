@@ -25,7 +25,7 @@ passport.use(
           console.log('found user')
           user = user[0];
           user.id = user.id;
-          // delete user.password;
+          delete user.password;
           return done(null, user);
 
         } else {
@@ -38,18 +38,18 @@ passport.use(
 );
 
 passport.use(new JWTStrategy({
-  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJWT.fromUrlQueryParameter('Token'),
   secretOrKey   : 'Memes are cool'
 },
 function (jwtPayload, cb) {
   console.log('doing shit')
-  db.findUser(jwtPayload.username, jwtPayload.password, function(err, user){
-    console.log('Callback ',user)
+  db.findUserJWT(jwtPayload.username, jwtPayload.password, function(err, user){
+    console.log('Callback ',user[0])
     if (!user || err) {
       console.log('Ran into issue: ',err, user);
       return cb(err, false, { message: "Failure" });
     }
     //Check password match here
-    return cb(null, user[0], { message: "Success", username: user });
+    return cb(null, user[0], { message: "Success", username: user[0] });
   })
 }))

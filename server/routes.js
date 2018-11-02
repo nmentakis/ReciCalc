@@ -10,4 +10,7 @@ router.get('/ingredients/usda', controller.ingredients.getUsdaByName)
 router.get('/ingredients/usda/:ndbno', controller.ingredients.getUsdaIngredientInfo)
 router.post('/ingredients', controller.ingredients.post)
 
+router.post('/changeUsername', controller.auth.changeUsername)
+router.post('/changePassword', controller.auth.changePassword)
+
 module.exports = router;

@@ -164,7 +164,43 @@ module.exports.findUser = (username, cb) => {
     cb(null, user)
   })
   .catch(err => {
-    console.log('no users found')
-    cb('Failed', null)
+    console.log('no users found ')
+    cb(err, null)
   })
+}
+
+module.exports.findUserJWT = (username, password, cb) => {
+  console.log('Inputed username: ',username)
+  knex.select('*')
+  .from('users')
+  .where({username})
+  .then((user) =>{
+    cb(null, user)
+  })
+  .catch(err => {
+    console.log('no users found ')
+    cb(err, null)
+  })
+}
+module.exports.changeUsername = (username, newUsername, cb) =>{
+  console.log('newUsername: ', newUsername);
+  knex('users')
+  .where({username})
+  .update({username: newUsername})
+  .then((res) =>{
+    cb(res)
+  })
+
+}
+module.exports.changePassword = (username, newPassword, cb) =>{
+  console.log('newUsername: ', newPassword);
+  bcrypt.hash(newPassword, 10, (err, hash)=>{
+    knex('users')
+    .where({username})
+    .update({password: hash})
+    .then((res) =>{
+      cb(res)
+    })
+  })
+
 }

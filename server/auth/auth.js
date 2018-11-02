@@ -9,9 +9,30 @@ const env = require('../../db_config.js').environment;
 const options = require('../../knexfile')[env];
 const knex = require('knex')(options);
 
+const path = require('path')
+var  hbs = require('nodemailer-express-handlebars'),
+  email = process.env.MAILER_EMAIL_ID || 'auth_email_address@gmail.com',
+  pass = process.env.MAILER_PASSWORD || 'auth_email_pass'
+  nodemailer = require('nodemailer');
 
+var smtpTransport = nodemailer.createTransport({
+  service: process.env.MAILER_SERVICE_PROVIDER || 'Gmail',
+  auth: {
+    user: email,
+    pass: pass
+  }
+});
+
+var handlebarsOptions = {
+  viewEngine: 'handlebars',
+  viewPath: path.resolve('./api/templates/'),
+  extName: '.html'
+};
+
+smtpTransport.use('compile', hbs(handlebarsOptions));
 
 router.post('/login', function (req, res) {
+  // console.log(req);
   passport.authenticate('local', {session: false}, (err, user, info) => {
     console.log('User: ',user)
       if (err || !user) {
@@ -50,4 +71,11 @@ router.post('/signup', function(req, res){
   });
 });
 
+router.post('/forgotPassword', function(req, res){
+
+});
+
+router.get('/forgotPassword', function(req, res){
+
+});
 module.exports = router

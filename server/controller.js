@@ -4,6 +4,7 @@ const db = require("../database/db.js");
 const axios = require("axios");
 const qs = require("qs");
 const format = require("../helpers/formatCheckers.js");
+const bcrypt = require('bcrypt');
 
 
 module.exports.recipes = {
@@ -172,7 +173,56 @@ module.exports.ingredients = {
   }
 };
 
+module.exports.auth = {
+  changeUsername: (req, res) => {
+    newUsername = req.body.newUsername;
+    username = req.body.username;
+    password = req.body.password;
+    console.log({username, newUsername, password})
 
+    db.findUser(username, (err, user) => {
+      if(err){
+        console.log('something went up while changing username');
+        res.end()
+      }
+      bcrypt.compare(password, user[0].password, (err, res) => {
+        if(res){
+          console.log('found user!', res)
+          //change username here.
+          db.changeUsername(user[0].username, newUsername, (res)=>{
+            console.log(res)
+          })
+        }
+      })
+    })
+    res.end();
+  },
+  changePassword: (req, res) => {
+    newPassword = req.body.newPassword;
+    password = req.body.password;
+    username = req.body.username;
+
+    db.findUser(username, (err, user) => {
+      if(err){
+        console.log('something went up while changing username');
+        res.end()
+      }
+      bcrypt.compare(password, user[0].password, (err, res) => {
+        if(res){
+          console.log('found user!', res)
+          //change password here.
+          db.changePassword(username, newPassword, (res) =>{
+            console.log('changed Password')
+
+            console.log(res);
+          })
+        }
+      })
+    })
+    console.log({newPassword, password, username})
+    res.end();
+  }
+}
 //EXAMPLE DATABASE INTERACTION:
 //
 //confirmAccess = function(req, res) => {

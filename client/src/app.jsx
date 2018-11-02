@@ -26,7 +26,6 @@ class App extends Component {
     };
     this.logout = this.logout.bind(this);
     this.renderNav = this.renderNav.bind(this);
-    this.renderRoutes = this.renderRoutes.bind(this);
     this.setUser = this.setUser.bind(this);
   }
 

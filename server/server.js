@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 const user = require('./routes.js');
 const auth = require('./auth/auth.js');
 const passport = require('passport');
@@ -21,19 +21,17 @@ app.use('/auth', auth)
 // All the router logic lives at the top level/root of the app
 // If page is refreshed outside of root url, send request to the root html, where the CSR logic lives
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/../client/dist/index.html'), (err) => {
+  res.sendFile(path.join(__dirname, '/../client/dist/index.html'), err => {
     if (err) {
-      res.status(500).send(err)
+      res.status(500).send(err);
     }
-  })
-})
+  });
+});
 
 let port = process.env.PORT;
-if (port == null || port === '') {
+if (port === null || port === '' || port === undefined) {
   port = 3000;
 }
 app.listen(port, () => {
   console.log('listening on port 3000!');
 });
-
-

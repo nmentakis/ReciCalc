@@ -12,7 +12,12 @@ const bcrypt = require('bcrypt');
 //     .from('sample')
 //    // .where({id})
 //};
-
+module.exports.deleteOneById = (recipeId) => {
+  const id = recipeId;
+  let recipeIngredient = knex('recipe_ingredients').where({recipe_id: id}).del();
+  let recipes = knex('recipes').where({id}).del();
+  return Promise.all([recipeIngredient, recipes]).then(data => data);
+}
 module.exports.fetchRecipeList = function() {
   //return a list of short recipe descriptions
   return knex.select().from('recipes');
@@ -49,7 +54,7 @@ module.exports.fetchRecipeById = function(recipeId) {
     .all(queriesNeeded)
     .then(data => {
       if(data[0][0]) {
-        return parse.databaseFullRecipeToClient(data)
+        return parse.databaseFullRecipeToClient(data);
       } else {
         return {status: 'No Such Recipe'};
       }

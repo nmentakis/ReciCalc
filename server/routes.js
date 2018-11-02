@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const controller = require('./controller.js');
 
+router.post('/recipes/delete/', controller.recipes.deleteOne);
 router.get('/recipes', controller.recipes.getList)
 router.get('/recipes/:recipeId', controller.recipes.getOne)
 router.post('/recipes', controller.recipes.post)

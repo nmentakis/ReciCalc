@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 // withRouter used to redirect to a different url within a function 
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+
 import CreateTitle from './CreateTitle.jsx';
 import CreateDescription from './CreateDescription.jsx';
 import CreateIngredients from './CreateIngredients.jsx';
@@ -11,10 +12,12 @@ class Create extends Component {
     constructor () {
         super ();
         this.state = {
-            title: null,
-            description: null,
-            ingredients: [],
-            instructions: [],
+          token: localStorage.getItem('Token'), 
+          userId: 0 || sessionStorage.getItem('userId'),
+          title: null,
+          description: null,
+          ingredients: [],
+          instructions: [],
         }
         // counter is used to provide a unique key to each instruction 
         this.counter = 0;
@@ -109,8 +112,9 @@ class Create extends Component {
         const recipe = Object.assign({}, this.state);
         // database expects an array of strings for instructions
         recipe.instructions = this.state.instructions.map(obj => obj.text);
-        console.log(recipe);
-        axios.post('api/recipes', {recipe})
+        axios.post(`/user/recipes/?Token=${this.state.token}`, {
+          recipe
+        })
           .then(response => {
             // console.log(response);
             // response contains the database id for the newly created recipe

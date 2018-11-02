@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('recipes', function(table) {
-    table.increments('id').unsigned().primary();
+    table.increments('id').unsigned().primary().onDelete('CASCADE');
     table.string('name').notNull();
     table.text('description');
     table.text('top_ingredients');

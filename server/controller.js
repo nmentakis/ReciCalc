@@ -7,7 +7,17 @@ const format = require("../helpers/formatCheckers.js");
 const bcrypt = require('bcrypt');
 
 
+
 module.exports.recipes = {
+  deleteOne: (req, res) => {
+    console.log("delete request recieved!", req.body);
+    db.deleteOneById(req.body.recipeId).then(data => {
+      console.log('back from database',data);
+    }).catch(err => {
+      console.error(err);
+    })
+    res.status(200).end("Deleted!");
+  },
   getList: (req, res) => {
     //query database for a list of short recipe descriptions and return them
     db.fetchRecipeList()
@@ -66,7 +76,8 @@ module.exports.recipes = {
           }
         });
     }
-  }
+  },
+
 };
 
 module.exports.ingredients = {

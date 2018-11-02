@@ -18,12 +18,38 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: 0 || localStorage.getItem('Token'),
-      userId: 0 || sessionStorage.getItem('userId'),
-      username: '' || sessionStorage.getItem('username'),
-      password: '',
+      token: null,
+      userId: null,
+      username: null
     };
     this.logout = this.logout.bind(this);
+    this.renderNav = this.renderNav.bind(this);
+    this.setUser = this.setUser.bind(this);
+  }
+
+  componentDidMount(){
+      this.setState({
+        token: localStorage.getItem('Token'),
+        userId: sessionStorage.getItem('userId'),
+        username: sessionStorage.getItem('username')
+
+      });
+  }
+
+  setUser(user, id, token) {
+    this.setState({
+      token: token,
+      userId: id,
+      username: user
+    });
+  }
+
+  renderNav() {
+    if (this.state.token) {
+      return (<NavBar logout={this.logout} />)
+    } else {
+      console.log('hi')
+    }
   }
 
   logout() {
@@ -40,21 +66,21 @@ class App extends Component {
     return (
       // if Browser Router were imported without an alias, this outermost wrapper would be 'BrowserRouter', not 'Router'
       <div>
-      <div>
-        <NavBar logout={this.logout} />
-      </div>
-      <Router>
-          <Switch>
-           <Route exact path = '/' render={() => <Landing />} />
-            {/* All links from landing page are to a url that will render the main component */}
-            {/* Main component is also a switch that will delegate  */}
-            <Route path='/main' component={Main} />
-            <Route path='/recipes' component={Recipes} />
-            <Route path='/create' component={Create} />
-            <Route path='/login' render={(props)=> <Login {...props} /> } />
-            <Route path='/signup' component={Signup} />
-          </Switch>
-      </Router>
+        <div>
+          {this.renderNav()}
+        </div>
+        <Router>
+            <Switch>
+            <Route exact path = '/' render={() => <Landing />} />
+              {/* All links from landing page are to a url that will render the main component */}
+              {/* Main component is also a switch that will delegate  */}
+              <Route path='/main' component={Main} />
+              <Route path='/recipes' component={Recipes} />
+              <Route path='/create' component={Create} />
+              <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
+              <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
+            </Switch>
+        </Router>
       </div>
     );
   }

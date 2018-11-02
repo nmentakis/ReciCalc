@@ -54,11 +54,12 @@ const Signup = () => (
 );
 
 const SuperSubmit = withFormik({
-  mapPropsToValues({ username, password, history }) {
+  mapPropsToValues({ username, password, history, setUser }) {
     return {
       username: username || '',
       password: password || '',
-      history: history
+      history: history,
+      setUser: setUser
     };
   },
   
@@ -75,6 +76,7 @@ const SuperSubmit = withFormik({
           sessionStorage.setItem('username', response.data.user.username);
           sessionStorage.setItem('userId', response.data.user.id);
           localStorage.setItem('Token', response.data.token);
+          value.setUser(sessionStorage.getItem("username"),sessionStorage.getItem("userId"),localStorage.getItem("Token"))
           value.history.push('/create');
         })
         .catch((err) => {

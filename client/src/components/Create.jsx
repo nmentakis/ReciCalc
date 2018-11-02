@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-import CreateTitle from './CreateTitle.jsx';
-import CreateDescription from './CreateDescription.jsx';
 import CreateIngredients from './CreateIngredients.jsx';
 import CreateInstructions from './CreateInstructions.jsx';
 
@@ -18,6 +16,7 @@ class Create extends Component {
       description: null,
       ingredients: [],
       instructions: [],
+      isSaved: false,
     };
     // counter is used to provide a unique key to each instruction
     this.counter = 0;
@@ -27,7 +26,7 @@ class Create extends Component {
       ndbno: '',
       quantity: '',
       isValidated: false,
-      isSaved: false,
+      // isSaved: false,
       nutrition: {},
     };
     this.updateRecipe = this.updateRecipe.bind(this);
@@ -35,6 +34,31 @@ class Create extends Component {
     this.addNewInstruction = this.addNewInstruction.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.postRecipe = this.postRecipe.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateTitle = this.updateTitle.bind(this);
+    this.updateDescription = this.updateDescription.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    // if (this.state.isSaved) {
+    //   this.toggleSaved();
+    // } else {
+    if (this.state.title) {
+      this.updateRecipe(event.target.name, this.state.title);
+    }
+
+    if (this.state.description) {
+      this.updateRecipe(event.target.name, this.state.description);
+    }
+  }
+
+  updateTitle(event) {
+    this.setState({ title: event.target.value });
+  }
+
+  updateDescription(event) {
+    this.setState({ description: event.target.value });
   }
 
   // tried to abstract this function to handle any adjustments to the top level recipe state
@@ -153,7 +177,7 @@ class Create extends Component {
           // response contains the database id for the newly created recipe
           // use this to redirect to the full recipe view for that recipe
           // (this.props.history.push can be used because component is wrapped by withRouter - see export statement)
-          this.props.history.push(`/recipes/${response.data.newRecipeId}`);
+          this.props.history.push(`/ingredients`);
         })
         .catch(err => {
           console.error(err);
@@ -168,10 +192,7 @@ class Create extends Component {
   render() {
     return (
       <div id="create">
-        <h2>What's cookin'?</h2>
-        <span id="recipe-submit" className="button" onClick={this.postRecipe}>
-          SAVE RECIPE
-        </span>
+        <span>SAVE RECIPE</span>
         {/* <CreateTitle updateRecipe={this.updateRecipe} />
         <CreateDescription updateRecipe={this.updateRecipe} />
         <CreateIngredients
@@ -191,33 +212,39 @@ class Create extends Component {
             <h2 className="ui header">
               <div className="content">What's Cookin'?</div>
             </h2>
-            <form className="ui large form inverted">
+            <form
+              className="ui large form inverted"
+              id="create-title"
+              name="title"
+              onSubmit={this.handleSubmit}>
               <div className="ui stacked secondary  segment">
                 <div className="field">
-                  <label>Recipe Title</label>
-                  <div className="ui left icon input">
-                    <i className="user icon" />
+                  <div className="ui left icon fluid input">
+                    {/* <i className="user icon" /> */}
                     <input
-                      type="username"
-                      name="username"
-                      placeholder="Username"
+                      type="title"
+                      name="title"
+                      placeholder="Recipe Title"
+                      onChange={this.updateTitle}
+                      disabled={this.state.isSaved}
                     />
                   </div>
                 </div>
                 <div className="field">
-                  <label>Recipe Description</label>
-                  <div className="ui left icon input">
-                    <i className="edit icon" />
-                    <textarea
+                  <div className="ui left icon fluid input ">
+                    {/* <i className="edit icon" /> */}
+                    <input
                       type="text"
                       name="description"
-                      placeholder="description"
+                      onChange={this.updateDescription}
+                      placeholder="Description"
                     />
                   </div>
                 </div>
                 <button
                   type="submit"
-                  className="ui fluid large teal submit button">
+                  className="ui fluid large teal submit button"
+                  onClick={this.postRecipe}>
                   Save Recipe
                 </button>
                 {/* </div> */}

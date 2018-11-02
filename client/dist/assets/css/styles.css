@@ -28,6 +28,6 @@ body > .grid {
   color: red;
 } */
 
-input:placeholder-shown {
-  color: black;
+::placeholder {
+  color: rgba(0, 0, 0, 0.87) !important;
 }

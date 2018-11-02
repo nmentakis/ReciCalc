@@ -14,7 +14,7 @@ const Landing = () => (
         <div className="content">
           <div className="inner">
             <h1>Reci-Calc</h1>
-            <p>
+            <p className="landing">
               A fully responsive app designed by a group of amazing engineers
               who love css
             </p>
@@ -26,20 +26,20 @@ const Landing = () => (
 								<li><a href="work">Work</a></li>
                 <li><a href="about">About</a></li> */}
             <li>
-              <Link className="nav link" to="/create">
+              <Link className="landing" to="/create">
                 Create New Recipe
               </Link>
             </li>
             <li>
-              <Link className="nav link" to="/recipes">
+              <Link className="landing" to="/recipes">
                 Recipes
               </Link>
             </li>
             <li>
-              <a href="signup">Signup</a>
+              <a className="landing" href="signup">Signup</a>
             </li>
             <li>
-              <a href="login">Login</a>
+              <a className="landing" href="login">Login</a>
             </li>
           </ul>
         </nav>

@@ -1,14 +1,15 @@
 import React from 'react';
+
 import axios from 'axios';
 import { withFormik, Form, Field } from 'formik';
 
-const Login = ({ values, handleChange }) => (
+const Login = ({history}) => (
   <div className="ui middle aligned center aligned grid">
     <div className="column">
       <h2 className="ui header">
         <div className="content">Log-in to your account</div>
       </h2>
-      <Form className="ui large form">
+      <Form className="ui large form" >
         <div className="ui stacked secondary  segment">
           <div className="field">
             <div className="ui left icon input">
@@ -39,7 +40,6 @@ const Login = ({ values, handleChange }) => (
           </button>
           {/* </div> */}
         </div>
-
         <div className="ui error message" />
       </Form>
       <div className="ui message">
@@ -54,35 +54,38 @@ const Login = ({ values, handleChange }) => (
 );
 
 const FormikApp = withFormik({
-  mapPropsToValues({ username, password }) {
+  
+  mapPropsToValues({ username, password, history }) {
     return {
       username: username || '',
       password: password || '',
+      history: history
     };
   },
-  login(usr, pss) {
+  login(usr, pss, history) {
     axios
       .post('/auth/login', { username: usr, password: pss })
       .then(response => {
         console.log(response);
-        this.setState({
-          username: response.data.user.username,
-          userId: response.data.user.id,
-        });
-        alert('Logged In Successfully!');
-        sessionStorage.setItem('username', response.data.user.username);
-        sessionStorage.setItem('userId', response.data.user.id);
-        localStorage.setItem('Token', response.data.token);
-        this.props.history.push('/recipes');
+
+        alert("Logged In Successfully!");
+        console.log(history);  
+        sessionStorage.setItem("username", response.data.user.username);
+        sessionStorage.setItem("userId", response.data.user.id);
+        localStorage.setItem("Token", response.data.token);
+        history.push("/recipes");
       })
       .catch(err => {
         console.log(err, 'errroor');
         alert('incorrect username or password');
       });
+
   },
   handleSubmit(values) {
-    this.login(values.username, values.password);
+    console.log(values)
+    this.login(values.username, values.password, values.history);
   },
 })(Login);
+
 
 export default FormikApp;

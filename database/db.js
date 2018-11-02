@@ -49,7 +49,7 @@ module.exports.fetchRecipeById = function(recipeId) {
     .all(queriesNeeded)
     .then(data => {
       if(data[0][0]) {
-        return parse.databaseFullRecipeToClient(data)
+        return parse.databaseFullRecipeToClient(data);
       } else {
         return {status: 'No Such Recipe'};
       }

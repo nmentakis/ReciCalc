@@ -6,7 +6,7 @@ import { withFormik, Form, Field } from 'formik';
 const Login = ({history}) => (
   <div className="ui middle aligned center aligned grid">
     <div className="column">
-      <h2 className="ui image header">
+      <h2 className="ui header">
         <div className="content">Log-in to your account</div>
       </h2>
       <Form className="ui large form" >
@@ -35,15 +35,16 @@ const Login = ({history}) => (
               />
             </div>
           </div>
-          {/* <div className="ui fluid large teal submit button"> */}
-          <button type="submit">Login</button>
+          <button type="submit" className="ui fluid large teal submit button">
+            Login
+          </button>
           {/* </div> */}
         </div>
         <div className="ui error message" />
       </Form>
       <div className="ui message">
         New to us?
-        <a href="/login">
+        <a href="/signup">
           {'  '}
           Sign Up
         </a>
@@ -66,6 +67,7 @@ const FormikApp = withFormik({
       .post('/auth/login', { username: usr, password: pss })
       .then(response => {
         console.log(response);
+
         alert("Logged In Successfully!");
         console.log(history);  
         sessionStorage.setItem("username", response.data.user.username);

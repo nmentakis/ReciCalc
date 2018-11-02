@@ -12,6 +12,7 @@ import Login from './components/Login.jsx';
 import NavBar from './components/NavBar.jsx';
 
 import { withFormik } from 'formik';
+import Ingredient from './components/Ingredient.jsx';
 
 // could be refactored as a functional component if state not needed
 class App extends Component {
@@ -53,6 +54,7 @@ class App extends Component {
             <Route path='/create' component={Create} />
             <Route path='/login' render={(props)=> <Login {...props} /> } />
             <Route path='/signup' component={Signup} />
+            <Route path='/ingredients' component={Ingredient}/>
           </Switch>
       </Router>
       </div>

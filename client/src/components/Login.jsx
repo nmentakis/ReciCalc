@@ -3,7 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import { withFormik, Form, Field } from 'formik';
 
-const Login = ({history}) => (
+const Login = () => (
   <div className="ui middle aligned center aligned grid">
     <div className="column">
       <h2 className="ui header">
@@ -55,24 +55,26 @@ const Login = ({history}) => (
 
 const FormikApp = withFormik({
   
-  mapPropsToValues({ username, password, history }) {
+  mapPropsToValues({ username, password, history, setUser }) {
     return {
       username: username || '',
       password: password || '',
-      history: history
+      history: history,
+      setUser: setUser
     };
   },
-  login(usr, pss, history) {
+  login(usr, pss, history, setUser) {
     axios
       .post('/auth/login', { username: usr, password: pss })
       .then(response => {
         console.log(response);
-
-        alert("Logged In Successfully!");
-        console.log(history);  
         sessionStorage.setItem("username", response.data.user.username);
         sessionStorage.setItem("userId", response.data.user.id);
         localStorage.setItem("Token", response.data.token);
+        setUser(sessionStorage.getItem("username"),sessionStorage.getItem("userId"),localStorage.getItem("Token"))
+      })
+      .then(()=> {
+        alert("Logged In Successfully!");
         history.push("/recipes");
       })
       .catch(err => {
@@ -83,7 +85,7 @@ const FormikApp = withFormik({
   },
   handleSubmit(values) {
     console.log(values)
-    this.login(values.username, values.password, values.history);
+    this.login(values.username, values.password, values.history, values.setUser);
   },
 })(Login);
 

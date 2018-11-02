@@ -25,8 +25,9 @@ const Landing = () => (
             {/* <li><a href="intro">Intro</a></li>
 								<li><a href="work">Work</a></li>
                 <li><a href="about">About</a></li> */}
-            <li>
-              <Link className="landing" to="/create">
+            {/* <li>
+              <Link className="nav link" to="/create">
+
                 Create New Recipe
               </Link>
             </li>
@@ -34,7 +35,7 @@ const Landing = () => (
               <Link className="landing" to="/recipes">
                 Recipes
               </Link>
-            </li>
+            </li> */}
             <li>
               <a className="landing" href="signup">Signup</a>
             </li>

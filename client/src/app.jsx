@@ -81,6 +81,7 @@ class App extends Component {
               <Route path='/create' component={Create} />
               <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
               <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
+              <Route path='/ingredients' component={Ingredient}/>
             </Switch>
         </Router>
 

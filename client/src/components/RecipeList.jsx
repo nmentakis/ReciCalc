@@ -9,7 +9,8 @@ class RecipeList extends Component {
         this.state = {
           token: localStorage.getItem('Token'),
           userId: 0 || sessionStorage.getItem('userId'),
-          allRecipes: []
+          allRecipes: [],
+          previousRecipes: []
         }
         this.deleteOne = this.deleteOne.bind(this);
         this.getSavedRecipes = this.getSavedRecipes.bind(this);
@@ -18,6 +19,14 @@ class RecipeList extends Component {
   componentDidMount(){
     this.getSavedRecipes();
   }
+
+  componentDidUpdate(){
+    if(JSON.stringify(this.state.allRecipes) !== JSON.stringify(this.state.previousRecipes)){
+      console.log('componentDidUpdate', this.state.previousRecipes);
+      this.getSavedRecipes();
+    }
+  }
+
 
   getSavedRecipes(){
     axios.get(`/user/recipes/?Token=${this.state.token}`)
@@ -29,6 +38,8 @@ class RecipeList extends Component {
           userRecipes.push(recipe);
         }
       });
+      this.setState({previousRecipes: this.state.allRecipes});
+
       // populate user recipes in state
       this.setState({allRecipes: userRecipes.map(recipe => {
           return {
@@ -45,9 +56,7 @@ class RecipeList extends Component {
   }
 
 
-componentDidUpdate(){
-  this.getSavedRecipes();
-}
+
 
   deleteOne(recipeId){
     const post = {

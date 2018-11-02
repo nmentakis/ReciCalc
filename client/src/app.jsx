@@ -12,6 +12,7 @@ import Login from './components/Login.jsx';
 import NavBar from './components/NavBar.jsx';
 
 import { withFormik } from 'formik';
+import Ingredient from './components/Ingredient.jsx';
 
 // could be refactored as a functional component if state not needed
 class App extends Component {
@@ -66,6 +67,7 @@ class App extends Component {
     return (
       // if Browser Router were imported without an alias, this outermost wrapper would be 'BrowserRouter', not 'Router'
       <div>
+
         <div>
           {this.renderNav()}
         </div>
@@ -81,6 +83,7 @@ class App extends Component {
               <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
             </Switch>
         </Router>
+
       </div>
     );
   }

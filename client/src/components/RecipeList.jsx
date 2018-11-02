@@ -1,20 +1,36 @@
 import React, {Component} from 'react';
 import RecipeListItem from './RecipeListItem.jsx';
 import axios from 'axios';
+import { Card, CardGroup, Header} from 'semantic-ui-react';
+
 class RecipeList extends Component {
     constructor(){
         super();
         this.state = {
           token: localStorage.getItem('Token'),
           userId: 0 || sessionStorage.getItem('userId'),
-          allRecipes: []
+          allRecipes: [],
+          previousRecipes: [],
+          delete: false,
         }
+        this.deleteOne = this.deleteOne.bind(this);
+        this.getSavedRecipes = this.getSavedRecipes.bind(this);
     }
 
-    componentDidMount(){
-    // make a get call to database @ api/recipes to retrieve all user recipes and setState
-    // placeholder below
-  
+  componentDidMount(){
+    this.getSavedRecipes();
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.delete){
+      console.log('componentDidUpdate', this.state.previousRecipes);
+      this.getSavedRecipes();
+      this.setState({delete: false})
+    }
+  }
+
+
+  getSavedRecipes(){
     axios.get(`/user/recipes/?Token=${this.state.token}`)
     .then(response => {
       let userRecipes= [];
@@ -24,6 +40,8 @@ class RecipeList extends Component {
           userRecipes.push(recipe);
         }
       });
+      // this.setState({previousRecipes: this.state.allRecipes});
+
       // populate user recipes in state
       this.setState({allRecipes: userRecipes.map(recipe => {
           return {
@@ -39,17 +57,30 @@ class RecipeList extends Component {
     });
   }
 
+
+
+
+  deleteOne(recipeId){
+    const post = {
+      url: `user/recipes/delete/?Token=${this.state.token}`,
+      method: 'post',
+      data: { recipeId }
+    }
+    axios(post).then(response => {
+      console.log(response)
+      this.setState({delete: true});
+      this.getSavedRecipes();
+
+    }).catch(error => {
+      console.error(error);
+    })
+  }
+
   render() {
     return (
-      <div id='recipe-list'>
-        <h3>Saved Recipes: </h3>
-        <ul>
-        {/* render all user recipies in state */}
-          {this.state.allRecipes.map(recipe => 
-            <RecipeListItem key={recipe.id} recipe={recipe} />
-          )}
-        </ul>
-      </div>
+      <Card.Group itemsPerRow={3}>
+      {this.state.allRecipes.map(recipe => <RecipeListItem recipe={recipe} deleteOne={this.deleteOne}/>)}
+      </Card.Group>
     )
   }
 }

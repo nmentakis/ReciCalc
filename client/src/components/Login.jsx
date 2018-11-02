@@ -5,7 +5,7 @@ import { withFormik, Form, Field } from 'formik';
 const Login = ({ values, handleChange }) => (
   <div className="ui middle aligned center aligned grid">
     <div className="column">
-      <h2 className="ui image header">
+      <h2 className="ui header">
         <div className="content">Log-in to your account</div>
       </h2>
       <Form className="ui large form">
@@ -34,8 +34,9 @@ const Login = ({ values, handleChange }) => (
               />
             </div>
           </div>
-          {/* <div className="ui fluid large teal submit button"> */}
-          <button type="submit">Login</button>
+          <button type="submit" className="ui fluid large teal submit button">
+            Login
+          </button>
           {/* </div> */}
         </div>
 
@@ -43,7 +44,7 @@ const Login = ({ values, handleChange }) => (
       </Form>
       <div className="ui message">
         New to us?
-        <a href="/login">
+        <a href="/signup">
           {'  '}
           Sign Up
         </a>
@@ -68,11 +69,11 @@ const FormikApp = withFormik({
           username: response.data.user.username,
           userId: response.data.user.id,
         });
-        alert("Logged In Successfully!");
-        sessionStorage.setItem("username", response.data.user.username);
-        sessionStorage.setItem("userId", response.data.user.id);
-        localStorage.setItem("Token", response.data.token);
-        this.props.history.push("/recipes");
+        alert('Logged In Successfully!');
+        sessionStorage.setItem('username', response.data.user.username);
+        sessionStorage.setItem('userId', response.data.user.id);
+        localStorage.setItem('Token', response.data.token);
+        this.props.history.push('/recipes');
       })
       .catch(err => {
         console.log(err, 'errroor');

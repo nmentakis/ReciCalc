@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import RecipeListItem from './RecipeListItem.jsx';
 import axios from 'axios';
+import { Card, CardGroup, Header} from 'semantic-ui-react';
+
 class RecipeList extends Component {
     constructor(){
         super();
@@ -9,12 +11,15 @@ class RecipeList extends Component {
           userId: 0 || sessionStorage.getItem('userId'),
           allRecipes: []
         }
+        this.deleteOne = this.deleteOne.bind(this);
+        this.getSavedRecipes = this.getSavedRecipes.bind(this);
     }
 
-    componentDidMount(){
-    // make a get call to database @ api/recipes to retrieve all user recipes and setState
-    // placeholder below
-  
+  componentDidMount(){
+    this.getSavedRecipes();
+  }
+
+  getSavedRecipes(){
     axios.get(`/user/recipes/?Token=${this.state.token}`)
     .then(response => {
       let userRecipes= [];
@@ -39,17 +44,29 @@ class RecipeList extends Component {
     });
   }
 
+
+// componentDidUpdate(){
+//   this.getSavedRecipes();
+// }
+  deleteOne(recipeId){
+    const post = {
+      url: `user/recipes/delete/?Token=${this.state.token}`,
+      method: 'post',
+      data: { recipeId }
+    }
+    axios(post).then(response => {
+      console.log(response)
+      this.getSavedRecipes();
+    }).catch(error => {
+      console.error(error);
+    })
+  }
+
   render() {
     return (
-      <div id='recipe-list'>
-        <h3>Saved Recipes: </h3>
-        <ul>
-        {/* render all user recipies in state */}
-          {this.state.allRecipes.map(recipe => 
-            <RecipeListItem key={recipe.id} recipe={recipe} />
-          )}
-        </ul>
-      </div>
+      <Card.Group itemsPerRow={3}>
+      {this.state.allRecipes.map(recipe => <RecipeListItem recipe={recipe} deleteOne={this.deleteOne}/>)}
+      </Card.Group>
     )
   }
 }

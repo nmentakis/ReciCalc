@@ -1,12 +1,20 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import { Card, CardGroup, Button } from 'semantic-ui-react';
 
-const RecipeListItem = ({recipe}) => (
-    <li className='recipe-item'>
-      <Link className='list-title link' to={`/recipes/${recipe.id}`}>{recipe.name}</Link>
-      <p className='list-description'>{recipe.description}</p>
-      <p className='list-top'>{recipe.top_ingredients}</p>
-    </li>
+const RecipeListItem = ({recipe, deleteOne}) => (
+    <Card raised>
+    <Card.Content
+        header={recipe.name}
+        meta={recipe.name}
+        description={recipe.description}
+      />
+      <Card.Content extra>
+          <Button basic color='red' onClick={() => deleteOne(recipe.id)}>
+            Delete
+          </Button>
+      </Card.Content>
+    </Card>
 );
 
 export default RecipeListItem;

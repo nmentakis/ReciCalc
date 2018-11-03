@@ -99,7 +99,7 @@ class Ingredient extends React.Component {
   postToDatabase(selection) {
     axios
       .get(
-        `user/ingredients/usda/${selection.ndbno}/?Token=${this.state.token}`,
+        `user/ingredients/usda/${selection.ndbno}/?Token=${this.state.token}`
       )
       .then(data => {
         selection['nutrients'] = data.data.nutrients;
@@ -110,6 +110,14 @@ class Ingredient extends React.Component {
       .catch(error => {
         console.error(error);
       });
+  }
+
+  deleteIngredient(index) {
+    let ingredients = this.state.ingredients;
+    ingredients.splice(index, 1);
+    this.setState({
+      ingredients: ingredients
+    });
   }
 
   render() {
@@ -152,13 +160,16 @@ class Ingredient extends React.Component {
               <h3 className="ingredient-input">Your Ingredients!</h3>
               <ul>
                 {this.state.ingredients.map((ingredient, i) => (
-                  <li key={i} onClick={() => this.postToDatabase(ingredient)}>
-                    {' '}
-                    {ingredient.name}{' '}
-                    {ingredient.quantity
-                      ? ' : ' + ingredient.quantity + ' grams'
-                      : ''}{' '}
-                  </li>
+                  <div>
+                    <li className="list-ingredient" key={i} onClick={() => this.postToDatabase(ingredient)}>
+                      {' '}
+                      {ingredient.name}{' '}
+                      {ingredient.quantity
+                        ? ' : ' + ingredient.quantity + ' grams'
+                        : ''}{' '}
+                    </li>
+                    <div id='delete-ingr' key={i} onClick={()=> this.deleteIngredient(i)}>delete</div>
+                  </div>
                 ))}
               </ul>
             </Grid.Column>

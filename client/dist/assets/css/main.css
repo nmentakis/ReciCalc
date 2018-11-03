@@ -1792,3 +1792,32 @@ body.is-preload #header .content .inner {
   #login-signup {
     padding-top: 4em;
   }
+
+  .menu-header {
+    margin: 1em;
+    border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+  }
+
+  .acc-menu {
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    display: -ms-inline-grid;
+  }
+
+  #delete-ingr {
+    margin: 0.7em;  
+    align-items: center;
+    justify-content: center;
+    display: inline-block;
+    border: 1px solid white;
+    padding: 0.2em;
+    width: fit-content;
+    color: white;
+    background-color: #00B5AD;
+    border-radius: 8px;
+    transition: 400ms ease all;
+    cursor: pointer;
+  }
+
+  .list-ingredient {
+    font-size: 1em;
+  }

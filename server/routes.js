@@ -13,5 +13,6 @@ router.post('/ingredients', controller.ingredients.post)
 
 router.post('/changeUsername', controller.auth.changeUsername)
 router.post('/changePassword', controller.auth.changePassword)
+router.post('/deleteAccount', controller.auth.deleteAccount);
 
 module.exports = router;

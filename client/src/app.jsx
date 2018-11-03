@@ -41,6 +41,7 @@ class App extends Component {
     this.saveIngredients = this.saveIngredients.bind(this);
     this.saveInstructions = this.saveInstructions.bind(this);
     this.saveDescription = this.saveDescription.bind(this);
+    this.postRecipe = this.postRecipe.bind(this);
   }
 
   componentDidMount() {
@@ -58,12 +59,36 @@ class App extends Component {
 
 
   saveInstructions(instructions){
-    this.setState({instructions});
+    this.setState({instructions}, () => {
+      this.postRecipe();
+    });
   }
 
   saveDescription(title, description){
     this.setState({ title, description });
   }
+
+  postRecipe() {
+ 
+      const recipe = Object.assign({}, this.state);
+      // database expects an array of strings for instructions
+        axios
+        .post(`/user/recipes/?Token=${this.state.token}`, {
+          recipe,
+        })
+        .then(response => {
+          // console.log(response);
+          // response contains the database id for the newly created recipe
+          // use this to redirect to the full recipe view for that recipe
+          // (this.props.history.push can be used because component is wrapped by withRouter - see export statement)
+          this.props.history.push(`/ingredients`);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  
+
 
 
   setUser(user, id, token) {
@@ -153,7 +178,7 @@ class App extends Component {
               path="/instructions"
               render={(props) =>
                 localStorage.getItem('Token') ? (
-                  <Instruction {...props }saveInstructions={this.saveInstructions}/>
+                  <Instruction {...props }saveInstructions={this.saveInstructions} />
                 ) : (
                   <Redirect to="/login" />
                 )

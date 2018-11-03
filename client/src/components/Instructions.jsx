@@ -43,14 +43,7 @@ class Instruction extends React.Component {
                   />
                 </div>
               </div>
-              <Button onClick={this.handleClick}>MoveRecipes</Button>
-              <Link
-                type="submit"
-                onClick={this.handleClick}
-                className="ui fluid large teal submit button"
-                to="/recipes">
-                Move to Recipes
-              </Link>
+              <Button className="ui fluid large teal submit button" onClick={this.handleClick}>MoveRecipes</Button>
             </div>
             <div className="ui error message" />
           </form>

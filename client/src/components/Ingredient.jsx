@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Image, Container, Header } from 'semantic-ui-react';
+import { Grid, Image, Container, Header, Button } from 'semantic-ui-react';
 import RecipeSuggestion from './RecipeSuggestion.jsx';
 import axios from 'axios';
 import IngredientName from './IngredientName.jsx';
@@ -44,8 +44,10 @@ class Ingredient extends React.Component {
   }
 
   handleClick(e) {
+
     e.preventDefault();
     console.log(history)
+    debugger;
     this.props.saveIngredients(this.state.ingredients);
     this.props.history.push('/instructions')
   }
@@ -172,9 +174,10 @@ class Ingredient extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <Link className="ui fluid large teal submit button" to="/instructions">
+        <Button className="ui fluid large teal submit button" onClick={this.handleClick}>Move to Instructions</Button>
+        {/* <Link className="ui fluid large teal submit button" to="/instructions">
           Move to Instructions
-        </Link>
+        </Link> */}
       </React.Fragment>
     );
   }

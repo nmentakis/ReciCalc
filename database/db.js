@@ -124,7 +124,8 @@ module.exports.addRecipeIngredient = function(recipeIngredient) {
 }
 
 module.exports.addRecipe = function(clientRecipe) {
-  //takes a recipe object, adds the basic data to the db, then adds recipe ingredients 
+  //takes a recipe object, adds the basic data to the db, then adds recipe ingredients
+  console.log('db saving recipe', clientRecipe ); 
   let outerRecipeId = '';
   return knex.transaction(trx => {
     const dbRecipe = {

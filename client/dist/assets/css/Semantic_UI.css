@@ -568,7 +568,7 @@ body {
   padding: 0px;
   overflow-x: hidden;
   min-width: 320px;
-  background: #FFFFFF;
+  background-image: url(../../images/rockywall/rockywall_@2X.png);
   font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 14px;
   line-height: 1.4285em;
@@ -19183,6 +19183,7 @@ ol.ui.horizontal.list li:before,
 
 .ui.secondary.segment {
   background: #F3F4F5;
+  background-image: url(../../images/purty_wood/purty_wood.png);
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -21753,6 +21754,7 @@ ol.ui.horizontal.list li:before,
 .ui.grid > .column.row > [class*="six wide"].column,
 .ui.grid > [class*="six wide"].column,
 .ui.column.grid > [class*="six wide"].column {
+  background-image: url(../../images/purty_wood/purty_wood.png);
   width: 37.5% !important;
 }
 
@@ -21802,6 +21804,7 @@ ol.ui.horizontal.list li:before,
 .ui.grid > .column.row > [class*="thirteen wide"].column,
 .ui.grid > [class*="thirteen wide"].column,
 .ui.column.grid > [class*="thirteen wide"].column {
+  background-image: url(../../images/wood_pattern/wood_pattern.png);
   width: 81.25% !important;
 }
 
@@ -22495,6 +22498,7 @@ ol.ui.horizontal.list li:before,
 }
 
 .ui.grid [class*="right floated"].column {
+  background-image: url(../../images/wood_pattern/wood_pattern.png);
   margin-left: auto;
 }
 
@@ -28224,12 +28228,12 @@ Floated Menu / Item
 
 .ui.cards > .card > .content,
 .ui.card > .content {
+  background-image: url(../../images/purty_wood/purty_wood.png);
   -webkit-box-flex: 1;
   -ms-flex-positive: 1;
   flex-grow: 1;
   border: none;
   border-top: 1px solid rgba(34, 36, 38, 0.1);
-  background: none;
   margin: 0em;
   padding: 1em 1em;
   -webkit-box-shadow: none;
@@ -28496,6 +28500,7 @@ Floated Menu / Item
 
 .ui.cards > .card > .extra,
 .ui.card > .extra {
+
   max-width: 100%;
   min-height: 0em !important;
   -webkit-box-flex: 0;
@@ -28503,7 +28508,8 @@ Floated Menu / Item
   flex-grow: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
   position: static;
-  background: none;
+  /* background-image: url(../../images/rockywall/rockywall.png); */
+  background: white;
   width: auto;
   margin: 0em 0em;
   padding: 0.75em 1em;
@@ -28841,8 +28847,8 @@ a.ui.card:hover,
 }
 
 .ui.three.cards {
-  margin-left: -1em;
-  margin-right: -1em;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 .ui.three.cards > .card {

@@ -4,19 +4,18 @@ const db = require("../database/db.js");
 const axios = require("axios");
 const qs = require("qs");
 const format = require("../helpers/formatCheckers.js");
-const bcrypt = require('bcrypt');
-
-
-
+const bcrypt = require("bcrypt");
 
 module.exports.recipes = {
   deleteOne: (req, res) => {
     console.log("delete request recieved!", req.body);
-    db.deleteOneById(req.body.recipeId).then(data => {
-      console.log('back from database',data);
-    }).catch(err => {
-      console.error(err);
-    })
+    db.deleteOneById(req.body.recipeId)
+      .then(data => {
+        console.log("back from database", data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
     res.status(200).end("Deleted!");
   },
   getList: (req, res) => {
@@ -77,8 +76,7 @@ module.exports.recipes = {
           }
         });
     }
-  },
-
+  }
 };
 
 module.exports.ingredients = {
@@ -160,7 +158,7 @@ module.exports.ingredients = {
         }
       })
       .then(data => {
-        console.log(data)
+        console.log(data);
         if (data.data.errors) {
           res.status(500).send(data.data.errors.error);
         } else {
@@ -190,21 +188,20 @@ module.exports.auth = {
     newUsername = req.body.newUsername;
     username = req.body.username;
     password = req.body.password;
-    console.log({username, newUsername, password})
 
     db.findUser(username, (err, user) => {
-      if(err || !user){
-        console.log('something went wrong while changing username');
-        response.end('something went wrong while changing username')
+      if (err || !user) {
+        console.log("something went wrong while changing username");
+        response.end("Username not in db");
       }
       bcrypt.compare(password, user[0].password, (err, res) => {
-        if(!res || err){
+        if (!res || err) {
           // res.status(400).send('Wrong Password');
           console.log('Wrong Password')
           response.status(400).end(JSON.stringify('Wrong Password'))
         }
-        if(res){
-          console.log('found user!', res)
+        if (res) {
+          console.log("found user!", res);
           //change username here.
           db.changeUsername(user[0].username, newUsername, (err, res)=>{
             if(err){
@@ -215,52 +212,64 @@ module.exports.auth = {
             response.status(201).end(JSON.stringify('changed username'))
           })
         }
-      })
-    })
+      });
+    });
     // response.end();
   },
 
   changePassword: (req, response) => {
-    newPassword = req.body.newPassword;
-    password = req.body.password;
-    username = req.body.username;
+    const newPassword = req.body.newPassword;
+    const password = req.body.password;
+    const username = req.body.username;
 
     db.findUser(username, (err, user) => {
-      if(err || !user){
-        console.log('something went up while changing password');
-        response.status(404).end('Didnt find user')
+      if (err || !user) {
+        console.log("something went up while changing password");
+        response.status(404).end("Didnt find user");
         return;
       }
 
       bcrypt.compare(password, user[0].password, (err, res) => {
-        if(!res || err){
-          response.status(400).end('Wrong Password');
+        if (!res || err) {
+          response.status(400).end("Wrong Password");
         }
-        if(res){
-          console.log('found user!', res)
-          //change password here.
-          db.changePassword(username, newPassword, (res) =>{
-            response.status(201).end('Successfully Changed Password');
-            console.log(res);
-          })
+        if (res) {
+          db.changePassword(username, newPassword, res => {
+            response.status(201).end("Successfully Changed Password");
+          });
         }
-      })
+      });
+    });
+  },
+  deleteAccount: (req, response) => {
+    username = req.body.username
+    password = req.body.password
 
-    })
+    db.findUser(username, (err, user) => {
+      if (err || !user) {
+        console.log("something went wrong deleteing user", req.body);
+        response.status(404).end("Didnt find user");
+        return;
+      }
+
+      bcrypt.compare(password, user[0].password, (err, res) => {
+        if (!res || err) {
+          response.status(400).end("Wrong Password");
+        }
+        if (res) {
+          db.deleteAccount(username, (err, res) => {
+            if(err){
+              response.status(404).end('Something went wrong when deleting account');
+              return;
+            }
+            response.status(201).end("Successfully deleted account");
+          });
+        }
+      });
+    });
+
   }
-
-//   deleteAccount: (req,res)=> {
-//     password = req.body.password;
-//     username = req.body.username;
-//     db.deleteAccount(username, password)
-//     .then((res) => {
-
-//     })
-//     .catch((res) => {
-
-//     })
-//   }
-}
+};
 //EXAMPLE DATABASE INTERACTION:
 //
 //confirmAccess = function(req, res) => {

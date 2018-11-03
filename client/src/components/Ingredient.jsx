@@ -4,6 +4,7 @@ import RecipeSuggestion from './RecipeSuggestion.jsx';
 import axios from 'axios';
 import IngredientName from './IngredientName.jsx';
 import { Link } from 'react-router-dom';
+import parser from '../../../helpers/parsers.js'
 
 class Ingredient extends React.Component {
   constructor(props) {
@@ -104,6 +105,10 @@ class Ingredient extends React.Component {
       .then(data => {
         console.log(data.data.nutrients);
         selection['nutrients'] = data.data.nutrients;
+        selection['nutrition'] = parser.usdaIngredientToDatabase(selection)
+        delete selection['nutrients'];
+        delete selection['nutrition']['ndbno'];
+        delete selection['nutrition']['name'];
       })
       .catch(error => {
         console.log(error);

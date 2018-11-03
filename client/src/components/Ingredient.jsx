@@ -46,15 +46,12 @@ class Ingredient extends React.Component {
   handleClick(e) {
 
     e.preventDefault();
-    console.log(history)
-    debugger;
     this.props.saveIngredients(this.state.ingredients);
     this.props.history.push('/instructions')
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state.search);
     this.getNdbno(this.state.search);
   }
 
@@ -89,7 +86,6 @@ class Ingredient extends React.Component {
         headers: { Authorization: `Bearer ${localStorage.getItem('Token')}` },
       })
       .then(data => {
-        console.log(data);
         const list = data.data.map(item => {
           return { name: item.name, ndbno: item.ndbno };
         });
@@ -101,21 +97,18 @@ class Ingredient extends React.Component {
   }
 
   postToDatabase(selection) {
-    console.log(selection.ndbno);
     axios
       .get(
         `user/ingredients/usda/${selection.ndbno}/?Token=${this.state.token}`,
       )
       .then(data => {
-        console.log(data.data.nutrients);
         selection['nutrients'] = data.data.nutrients;
-        selection['nutrition'] = parser.usdaIngredientToDatabase(selection)
-        delete selection['nutrients'];
-        delete selection['nutrition']['ndbno'];
-        delete selection['nutrition']['name'];
+        selection['nutrients'] = parser.usdaIngredientToDatabase(selection)
+        // delete selection['nutrients']['ndbno'];
+        // delete selection['nutrients']['name'];
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }
 

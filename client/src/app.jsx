@@ -71,6 +71,7 @@ class App extends Component {
   postRecipe() {
  
       const recipe = Object.assign({}, this.state);
+      recipe['user_id'] = this.state.userId;
       // database expects an array of strings for instructions
         axios
         .post(`/user/recipes/?Token=${this.state.token}`, {

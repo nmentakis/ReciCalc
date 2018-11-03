@@ -132,7 +132,8 @@ module.exports.addRecipe = function(clientRecipe) {
       name: clientRecipe.title,
       description: clientRecipe.description,
       top_ingredients: clientRecipe.topIngredients,
-      instructions: JSON.stringify(clientRecipe.instructions)
+      instructions: JSON.stringify(clientRecipe.instructions),
+      user_id: clientRecipe.userId,
     };
     const dbIngredientJunction = clientRecipe.ingredients.map((ing, index) =>  {
       return {

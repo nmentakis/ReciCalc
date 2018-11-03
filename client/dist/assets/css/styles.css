@@ -34,5 +34,8 @@ body > .grid {
 
 .ingredient-input {
   color: black;
+}
 
+::placeholder {
+  color: grey !important
 }

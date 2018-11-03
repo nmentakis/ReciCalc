@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import axios from 'axios';
 //components
 import Landing from './components/Landing.jsx';
@@ -22,37 +27,34 @@ class App extends Component {
     this.state = {
       token: null,
       userId: null,
-      username: null
+      username: null,
     };
     this.logout = this.logout.bind(this);
     this.renderNav = this.renderNav.bind(this);
     this.setUser = this.setUser.bind(this);
   }
 
-  componentDidMount(){
-      this.setState({
-        token: localStorage.getItem('Token'),
-        userId: sessionStorage.getItem('userId'),
-        username: sessionStorage.getItem('username')
-
-      });
+  componentDidMount() {
+    this.setState({
+      token: localStorage.getItem('Token'),
+      userId: sessionStorage.getItem('userId'),
+      username: sessionStorage.getItem('username'),
+    });
   }
 
   setUser(user, id, token) {
     this.setState({
       token: token,
       userId: id,
-      username: user
+      username: user,
     });
   }
 
-
-
-  renderNav () {
+  renderNav() {
     if (this.state.token) {
-      return (<NavBar logout={this.logout}/>)
+      return <NavBar logout={this.logout} />;
     } else {
-      return 
+      return;
     }
   }
 
@@ -65,24 +67,70 @@ class App extends Component {
     return (
       // if Browser Router were imported without an alias, this outermost wrapper would be 'BrowserRouter', not 'Router'
       <div>
-
-        <div>
-          {this.renderNav()}
-        </div>
+        <div>{this.renderNav()}</div>
         <Router>
           <Switch>
-
-            <Route exact path = '/' render={(props) => <Landing />} /> 
-            <Route path='/recipes' render={(props)=> localStorage.getItem('Token') ? ( <Recipes {...props}/> ) : ( <Redirect to="/login"/> )} />
-            <Route path='/create' render={(props)=>  localStorage.getItem('Token') ? ( <Create  {...props}/> ) : ( <Redirect to="/login"/> )} />
-            <Route path='/account' render={(props)=> localStorage.getItem('Token') ? ( <Account {...props} logout={this.logout}/> ) : ( <Redirect to="/login"/> )} />
-            <Route path='/ingredients' render={()=> localStorage.getItem('Token') ? ( <Ingredient/> ) : ( <Redirect to="/login"/> )} />
-            <Route path='/instructions' render={() => localStorage.getItem('Token') ? ( <Instruction/> ) : (<Redirect to="/login"/>)} />
-            <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
-            <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
+            <Route exact path="/" render={() => <Landing />} />
+            <Route
+              path="/recipes"
+              render={() =>
+                localStorage.getItem('Token') ? (
+                  <Recipes />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/create"
+              render={() =>
+                localStorage.getItem('Token') ? (
+                  <Create />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/account"
+              render={() =>
+                localStorage.getItem('Token') ? (
+                  <Account />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/login"
+              render={props => <Login {...props} setUser={this.setUser} />}
+            />
+            <Route
+              path="/signup"
+              render={props => <Signup {...props} setUser={this.setUser} />}
+            />
+            <Route
+              path="/ingredients"
+              render={() =>
+                localStorage.getItem('Token') ? (
+                  <Ingredient />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/instructions"
+              render={() =>
+                localStorage.getItem('Token') ? (
+                  <Instruction />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
           </Switch>
         </Router>
-          
       </div>
     );
   }

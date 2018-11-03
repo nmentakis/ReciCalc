@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // withRouter used to redirect to a different url within a function
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import CreateIngredients from './CreateIngredients.jsx';
 import CreateInstructions from './CreateInstructions.jsx';
@@ -51,6 +52,8 @@ class Create extends Component {
     if (this.state.description) {
       this.updateRecipe(event.target.name, this.state.description);
     }
+    location.href = 'ingredients';
+    console.log(this.state);
   }
 
   updateTitle(event) {
@@ -192,7 +195,6 @@ class Create extends Component {
   render() {
     return (
       <div id="create">
-        <span>SAVE RECIPE</span>
         {/* <CreateTitle updateRecipe={this.updateRecipe} />
         <CreateDescription updateRecipe={this.updateRecipe} />
         <CreateIngredients
@@ -242,10 +244,12 @@ class Create extends Component {
                   </div>
                 </div>
                 <button
-                  type="submit"
                   className="ui fluid large teal submit button"
-                  onClick={this.postRecipe}>
-                  Save Recipe
+                  rel="stylesheet"
+                  to="/ingredients"
+                  type="submit"
+                  value="Submit">
+                  Add Ingredients
                 </button>
                 {/* </div> */}
               </div>

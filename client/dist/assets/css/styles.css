@@ -19,12 +19,21 @@ body > .grid {
 }
 
 .fa-book-open {
-  color:white
+  color: white;
+}
 
+/* Create Page */
+
+/* #create * {
+  color: red;
+} */
+
+::placeholder {
+  color: rgba(0, 0, 0, 0.87) !important;
 }
 
 .ingredient-input {
-  background-color: black;
+  color: black;
 }
 
 ::placeholder {

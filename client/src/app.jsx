@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import axios from 'axios';
 //components
 import Landing from './components/Landing.jsx';
-import Main from './components/Main.jsx';
+import Instruction from './components/Instructions.jsx';
 import Create from './components/Create.jsx';
 import Recipes from './components/Recipes.jsx';
 import Signup from './components/Signup.jsx';
@@ -71,13 +71,15 @@ class App extends Component {
         </div>
         <Router>
           <Switch>
+
             <Route exact path = '/' render={(props) => <Landing />} /> 
             <Route path='/recipes' render={(props)=> localStorage.getItem('Token') ? ( <Recipes {...props}/> ) : ( <Redirect to="/login"/> )} />
             <Route path='/create' render={(props)=>  localStorage.getItem('Token') ? ( <Create  {...props}/> ) : ( <Redirect to="/login"/> )} />
             <Route path='/account' render={(props)=> localStorage.getItem('Token') ? ( <Account {...props} logout={this.logout}/> ) : ( <Redirect to="/login"/> )} />
+            <Route path='/ingredients' render={()=> localStorage.getItem('Token') ? ( <Ingredient/> ) : ( <Redirect to="/login"/> )} />
+            <Route path='/instructions' render={() => localStorage.getItem('Token') ? ( <Instruction/> ) : (<Redirect to="/login"/>)} />
             <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
             <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
-            <Route path='/ingredients' render={()=> localStorage.getItem('Token') ? ( <Ingredient/> ) : ( <Redirect to="/login"/> )} />
           </Switch>
         </Router>
           

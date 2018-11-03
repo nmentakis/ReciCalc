@@ -13,7 +13,7 @@ const Landing = () => (
         </div>
         <div className="content">
           <div className="inner">
-            <h1>Reci-Calc</h1>
+            <h1 className="main-header">Reci-Calc</h1>
             <p className="landing">
               A fully responsive app designed by a group of amazing engineers
               who love css

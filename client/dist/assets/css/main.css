@@ -1775,7 +1775,7 @@ body.is-preload #header .content .inner {
     }
 
     #full-recipe {
-     margin: 3em 3em;
+     margin: 3em 25em;
      background-image: url(../../images/purty_wood/purty_wood.png);
      font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
     }
@@ -1820,4 +1820,8 @@ body.is-preload #header .content .inner {
 
   .list-ingredient {
     font-size: 1em;
+  }
+
+  .main-header {
+    color: white;
   }

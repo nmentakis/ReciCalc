@@ -13,11 +13,14 @@ class FullRecipe extends Component {
     console.log(this.props.match.params.id)
     // make call to database for particular recipe referencing {this.props.match.params.id} to retrieve recipe by id number
     // recipe object returned in format below. hardcoding example for testing
-    axios.get(`/user/recipes/${this.props.match.params.id}/?Token=${this.state.token}`).then(response => {
+    axios
+    .get(`/user/recipes/${this.props.match.params.id}/?Token=${this.state.token}`)
+    .then(response => {
+      console.log(response);
       console.log('successful fullrecipe.jsx request', response.data[0][0].ingredients);
       this.setState({
         recipe: {
-          title: response.data[0][0].title,
+          title: response.data[0][0].name,
           id: response.data[0][0].id,
           description: response.data[0][0].description,
           topIngredients: response.data[0][0].topIngredients,
@@ -82,7 +85,9 @@ class FullRecipe extends Component {
       let nutritionObject = this.calculateNutrition();
       return (
         <div className="ui stacked secondary  segment" id="full-recipe">
+
           <h3>{recipe.title}</h3>
+          {console.log(recipe)}
           <p id='full-description'>{recipe.description}</p>
           <ul className='full-list'>
             <h4>Ingredients:</h4>

@@ -48,7 +48,8 @@ class RecipeList extends Component {
             id: recipe.id,
             name: recipe.name,
             description: recipe.description,
-            top_ingredients: recipe.top_ingredients
+            top_ingredients: recipe.top_ingredients,
+            ingredients: recipe.ingredients
           };
       })});
     })

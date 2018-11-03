@@ -100,9 +100,9 @@ class App extends Component {
             />
             <Route
               path="/account"
-              render={() =>
+              render={(props) =>
                 localStorage.getItem('Token') ? (
-                  <Account />
+                  <Account {...props} logout={this.logout} />
                 ) : (
                   <Redirect to="/login" />
                 )

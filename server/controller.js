@@ -164,13 +164,13 @@ module.exports.ingredients = {
         if (data.data.errors) {
           res.status(500).send(data.data.errors.error);
         } else {
-          res.status(200).send(data.data.report.foods[0])
-            .catch(err => {
-              console.log("ERROR: ", err);
-              res
-                .status(500)
-                .send("Data fetched, but not stored to database. Try again.");
-            });
+          res.status(200).send(data.data.report.foods[0]);
+            // .catch(err => {
+            //   console.log("ERROR: ", err);
+            //   res
+            //     .status(500)
+            //     .send("Data fetched, but not stored to database. Try again.");
+            // });
         }
       })
       .catch(error => {
@@ -201,7 +201,7 @@ module.exports.auth = {
         if(!res || err){
           // res.status(400).send('Wrong Password');
           console.log('Wrong Password')
-          response.status(400).end('Wrong Password')
+          response.status(400).end(JSON.stringify('Wrong Password'))
         }
         if(res){
           console.log('found user!', res)
@@ -209,10 +209,10 @@ module.exports.auth = {
           db.changeUsername(user[0].username, newUsername, (err, res)=>{
             if(err){
               console.log('Username Already exists')
-              response.status(400).end('Username already exists')
+              response.status(400).end(JSON.stringify('Username already exists'))
             }
 
-            response.status(201).end('changed username')
+            response.status(201).end(JSON.stringify('changed username'))
           })
         }
       })
@@ -248,6 +248,18 @@ module.exports.auth = {
 
     })
   }
+
+//   deleteAccount: (req,res)=> {
+//     password = req.body.password;
+//     username = req.body.username;
+//     db.deleteAccount(username, password)
+//     .then((res) => {
+
+//     })
+//     .catch((res) => {
+
+//     })
+//   }
 }
 //EXAMPLE DATABASE INTERACTION:
 //

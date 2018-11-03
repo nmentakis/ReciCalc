@@ -209,4 +209,8 @@ module.exports.changePassword = (username, newPassword, cb) =>{
     })
   })
 
+  module.exports.deleteAccount = (username, password) => {
+    
+  }
+
 }

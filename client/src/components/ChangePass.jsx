@@ -37,7 +37,7 @@ class ChangePass extends Component {
   handleSubmit(e) {
     console.log(this.state.newPassword, this.state.confirmation);
     if (this.state.newPassword == this.state.confirmation) {
-      this.props.changePass(this.state.oldPassword, this.state.newPassword, this.state.confirmation);
+      this.props.changePass(this.state.oldPassword, this.state.newPassword);
     } else {
       alert('passwords dont match!');
       console.log(this.state.newPassword, this.state.confirmation);

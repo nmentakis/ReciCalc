@@ -13,11 +13,15 @@ class Account extends Component {
       username: sessionStorage.getItem('username'),
       newUsername: '',
       password: '',
-      activeItem: ''
+      activeItem: 'username'
     };
     this.changeUser = this.changeUser.bind(this);
     this.changePass = this.changePass.bind(this);
     this.handleItemClick = this.handleItemClick.bind(this);
+  }
+
+  componentDidMount(){
+
   }
 
 
@@ -29,14 +33,52 @@ class Account extends Component {
     })
     .then((data) => {
       console.log(data);
+
+      localStorage.clear();
+      sessionStorage.clear();
+      this.setState({
+        token: null,
+        userId: null,
+        username: null,
+        newUsername: '',
+        password: '',
+        activeItem: ''
+      });
+      this.props.history.push('/login');
     })
     .catch((err) => {
-      console.log(err);
+      let parsed = JSON.stringify(err);
+      parsed = JSON.parse(parsed);
+      if (parsed.response.data === "Wrong Password") {
+        alert(parsed.response.data);
+      } else if (parsed.response.data === "Username already exists") {
+        alert(parsed.response.data);
+      }
+
     });
   }
 
-  changePass(op,np,c){
-    console.log(op,np,c);
+  changePass(op,np){
+    console.log(op,np);
+    axios.post(`/user/changePassword/?Token=${this.state.token}`, {
+      newPassword: np, 
+      username:this.state.username, 
+      password: op
+    })
+    .then((data) => {
+      console.log(data);
+      alert(data.data);
+
+    })
+    .catch((err) => {
+      let parsed = JSON.stringify(err);
+      parsed = JSON.parse(parsed);
+      console.log(parsed);
+      if (parsed.response.data === "Wrong Password") {
+        alert(parsed.response.data);
+      }
+
+    });
   }
 
   handleItemClick(e, { name }) { 
@@ -55,11 +97,14 @@ class Account extends Component {
       comp = <ChangePass changePass={this.changePass}/>;
    } 
     return (
-      <div>
+      <div class="account">
       <Menu secondary vertical>
+      <div class="acc-menu">
+        <Menu.Header name='Account Settings' className='menu-header'>Account Settings</Menu.Header>
         <Menu.Item name='username' active={this.state.activeItem === 'username'} onClick={this.handleItemClick}/>
         <Menu.Item name='password' active={this.state.activeItem === 'password'} onClick={this.handleItemClick} />
         <Menu.Item name='logout' active={this.state.activeItem === 'logout'} onClick={() => this.props.logout()} href='/'/>
+      </div>
       </Menu>
       {comp} 
       </div>

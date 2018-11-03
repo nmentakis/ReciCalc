@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 
 
 
+
 module.exports.recipes = {
   deleteOne: (req, res) => {
     console.log("delete request recieved!", req.body);
@@ -140,7 +141,7 @@ module.exports.ingredients = {
       .get("https://api.nal.usda.gov/ndb/nutrients/?", {
         params: {
           format: "JSON",
-          api_key: `${API_KEY}`,
+          api_key: `A1ENnX84cOUEPD2o8uk8KevT2gCqy111m0X4ukMK`,
           nutrients: [
             "208",
             "204",
@@ -159,11 +160,11 @@ module.exports.ingredients = {
         }
       })
       .then(data => {
+        console.log(data)
         if (data.data.errors) {
           res.status(500).send(data.data.errors.error);
         } else {
-          db.addIngredient(data.data.report.foods[0])
-            .then(() => res.status(200).send(data.data.report.foods[0]))
+          res.status(200).send(data.data.report.foods[0])
             .catch(err => {
               console.log("ERROR: ", err);
               res

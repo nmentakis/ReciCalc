@@ -3,9 +3,11 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Ingredient from './Ingredient.jsx';
+import Instruction from './Instructions.jsx';
 
 
-class Create extends Component {
+class CreateRouter extends Component {
   constructor() {
     super();
     this.state = {
@@ -192,80 +194,19 @@ class Create extends Component {
 
   render() {
     return (
-      <div id="create">
-        {/* <CreateTitle updateRecipe={this.updateRecipe} />
-        <CreateDescription updateRecipe={this.updateRecipe} />
-        <CreateIngredients
-          ingredients={this.state.ingredients}
-          addNewIngredient={this.addNewIngredient}
-          updateRecipe={this.updateRecipe}
-          deleteItem={this.deleteItem}
-        />
-        <CreateInstructions
-          instructions={this.state.instructions}
-          addNewInstruction={this.addNewInstruction}
-          updateRecipe={this.updateRecipe}
-          deleteItem={this.deleteItem}
-        /> */}
-        <div className="ui middle aligned center aligned grid">
-          <div className="column">
-            <h2 className="ui header">
-              <div className="content">What's Cookin'?</div>
-            </h2>
-            <form
-              className="ui large form inverted"
-              id="create-title"
-              name="title"
-              onSubmit={this.handleSubmit}>
-              <div className="ui stacked secondary  segment">
-                <div className="field">
-                  <div className="ui left icon fluid input">
-                    {/* <i className="user icon" /> */}
-                    <input
-                      type="title"
-                      name="title"
-                      placeholder="Recipe Title"
-                      onChange={this.updateTitle}
-                      disabled={this.state.isSaved}
-                    />
-                  </div>
-                </div>
-                <div className="field">
-                  <div className="ui left icon fluid input ">
-                    {/* <i className="edit icon" /> */}
-                    <input
-                      type="text"
-                      name="description"
-                      onChange={this.updateDescription}
-                      placeholder="Description"
-                    />
-                  </div>
-                </div>
-                <button
-                  className="ui fluid large teal submit button"
-                  rel="stylesheet"
-                  to="/ingredients"
-                  type="submit"
-                  value="Submit">
-                  Add Ingredients
-                </button>
-                {/* </div> */}
-              </div>
-              <div className="ui error message" />
-            </form>
-            {/* <div className="ui message">
-              New to us?
-              <a href="/signup">
-                {'  '}
-                Sign Up
-              </a>
-            </div> */}
-          </div>
-        </div>
-      </div>
+      <React.Fragment>
+      <h1>LETS GET COOKIN'</h1>
+      <Switch>
+        <Route path="/create" component={Create} />
+        {/* Recipes itself is a switch to either recipe list view or individual recipe view */}
+        <Route path="/ingredients" component={Ingredient} />
+        {/* can add a fallback error component: <Route component={ErrorNotFound} /> */}
+        <Route path="/instructions" component={Instruction} />
+      </Switch>
+      </React.Fragment>
     );
   }
 }
 
 // wrapped with withRouter in order to access props.history
-export default withRouter(Create);
+export default withRouter(CreateRouter);

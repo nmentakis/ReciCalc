@@ -16,9 +16,10 @@ import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
 import NavBar from './components/NavBar.jsx';
 import Account from './components/Account.jsx';
+import Ingredient from './components/Ingredient.jsx';
+import CreateRouter from './components/CreateRouter.jsx';
 
 import { withFormik } from 'formik';
-import Ingredient from './components/Ingredient.jsx';
 
 // could be refactored as a functional component if state not needed
 class App extends Component {
@@ -124,6 +125,16 @@ class App extends Component {
               render={() =>
                 localStorage.getItem('Token') ? (
                   <Instruction />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/main"
+              render={() =>
+                localStorage.getItem('Token') ? (
+                  <CreateRouter />
                 ) : (
                   <Redirect to="/login" />
                 )

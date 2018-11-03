@@ -28,9 +28,6 @@ class Ingredient extends React.Component {
   updateSelection(name){
     // keep track of which option user has selected from nameMatches array
     let updateObject = this.state.nameMatches.filter(nameMatch => nameMatch.name === name)[0];
-    // if (this.state.quantity === "") {
-    //   throw alert('Please enter an amount!')
-    // }
     updateObject['quantity'] = this.state.quantity
     let newIngredient = this.state.ingredients.concat(updateObject)
     this.setState({
@@ -38,7 +35,10 @@ class Ingredient extends React.Component {
       quantity: '',
       search: '',
       nameMatches: [],
+    }, () => {
+      console.log((updateObject))
     })
+   
   }
 
   handleClick() {
@@ -79,7 +79,7 @@ class Ingredient extends React.Component {
       params: {
         searchTerm: `${query}`,
         // offset used so that not all results from api are returned at once
-        page: -1
+        page: 1
       },
       headers: {"Authorization" : `Bearer ${localStorage.getItem('Token')}`}
     })
@@ -93,6 +93,17 @@ class Ingredient extends React.Component {
     .catch(error => {
       throw(error)
     });    
+  }
+
+  postToDatabase(selection){
+    console.log(selection.ndbno)
+    axios.get(`user/ingredients/usda/${selection.ndbno}/?Token=${this.state.token}`)
+      .then(data => {
+        return(data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
 
   render(){
@@ -116,7 +127,7 @@ class Ingredient extends React.Component {
             <Grid.Column width={6}>
             <h3 className='ingredient-input'>Your Ingredients!</h3>
             <ul>
-            {this.state.ingredients.map((ingredient, i) => <li key={i}>{ingredient.name}  {ingredient.quantity ? ' : ' + ingredient.quantity + ' grams' : ''}</li>)}
+            {this.state.ingredients.map((ingredient, i) => <li key={i} onClick={() => this.postToDatabase(ingredient)}> {ingredient.name}  {ingredient.quantity ? ' : ' + ingredient.quantity + ' grams' : ''} </li>)}
             </ul>
             </Grid.Column>
             <Grid.Column floated='right' width={3}>

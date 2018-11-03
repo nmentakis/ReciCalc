@@ -83,7 +83,7 @@ class RecipeSuggestion extends React.Component {
      </form>
 
       <ul>
-        {recipeIngredients ? recipeIngredients.map(ingredient => <li>{ingredient}</li>) : null}
+        {recipeIngredients ? recipeIngredients.map((ingredient, i) => <li key={i}>{ingredient}</li>) : null}
       </ul>
 
       

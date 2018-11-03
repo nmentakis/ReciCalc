@@ -60,7 +60,7 @@ module.exports.recipes = {
     //   res.status(400).send("Malformed recipe");
     // } else {
       console.log('Inside controller trying to write recipe', recipe);
-     await recipe.ingredients.map(ingredient => db.addIngredient(ingredient));
+    //  await recipe.ingredients.map(ingredient => db.addIngredient(ingredient));
       db.addRecipe(recipe)
         .then(data => {
           res.status(201).json({ newRecipeId: data });

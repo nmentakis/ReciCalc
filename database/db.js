@@ -132,6 +132,7 @@ module.exports.addRecipe = function(clientRecipe) {
       name: clientRecipe.title,
       description: clientRecipe.description,
       top_ingredients: clientRecipe.topIngredients,
+      ingredients: JSON.stringify(clientRecipe.ingredients),
       instructions: JSON.stringify(clientRecipe.instructions),
       user_id: clientRecipe.userId,
     };
@@ -147,18 +148,18 @@ module.exports.addRecipe = function(clientRecipe) {
     return trx
       .insert(dbRecipe)
       .into('recipes')
-      .returning('id')
-      .then(recipeId => {
-        outerRecipeId = recipeId[0];
-        //console.log('recipe ID: ', recipeId)
-        dbIngredientJunction.forEach(entry => {
-          entry.recipe_id = recipeId[0]
-        })
-        return trx
-          .insert(dbIngredientJunction)
-          .into('recipe_ingredients');
-      })
-      .then(() => outerRecipeId);
+      // .returning('id')
+      // .then(recipeId => {
+      //   outerRecipeId = recipeId[0];
+      //   //console.log('recipe ID: ', recipeId)
+      //   dbIngredientJunction.forEach(entry => {
+      //     entry.recipe_id = recipeId[0]
+      //   })
+      //   return trx
+      //     .insert(dbIngredientJunction)
+      //     .into('recipe_ingredients');
+      // })
+      // .then(() => outerRecipeId);
   })
 }
 

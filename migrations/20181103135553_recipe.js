@@ -10,7 +10,8 @@ exports.up = function(knex, Promise) {
     table.increments('id').unsigned().primary();
     table.string('name').notNull();
     table.text('description');
-    table.text('ingredients');
+    table.json('ingredients');
+    table.text('top_ingredients');
     table.json('instructions');
     table.integer('user_id').references('id').inTable('users').notNull();
     table.timestamps();

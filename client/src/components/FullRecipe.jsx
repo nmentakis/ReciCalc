@@ -80,7 +80,7 @@ class FullRecipe extends Component {
     } else {
       let nutritionObject = this.calculateNutrition();
       return (
-        <div id='full-recipe'>
+        <div class="ui stacked secondary  segment" id="full-recipe">
           <h3>{recipe.title}</h3>
           <p id='full-description'>{recipe.description}</p>
           <ul className='full-list'>

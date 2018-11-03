@@ -234,7 +234,8 @@ class Create extends Component {
                 <div className="field">
                   <div className="ui left icon fluid input ">
                     {/* <i className="edit icon" /> */}
-                    <input
+                    <textarea
+                      id="description"
                       type="text"
                       name="description"
                       onChange={this.updateDescription}

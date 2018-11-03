@@ -33,7 +33,7 @@ body > .grid {
 }
 
 .ingredient-input {
-  background-color: black;
+  color: black;
 }
 
 ::placeholder {

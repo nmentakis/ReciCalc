@@ -3,6 +3,7 @@ import { Grid, Image, Container, Header } from 'semantic-ui-react'
 import RecipeSuggestion from './RecipeSuggestion.jsx';
 import axios from 'axios';
 import IngredientName from './IngredientName.jsx';
+import { Link } from 'react-router-dom';
 
 class Ingredient extends React.Component {
   constructor(props){
@@ -20,14 +21,16 @@ class Ingredient extends React.Component {
     this.onAmount = this.onAmount.bind(this)
     this.getNdbno = this.getNdbno.bind(this);
     this.updateSelection = this.updateSelection.bind(this);
+    this.handleClick = this.handleClick.bind(this)
     // this.onKeyPress = this.onKeyPress.bind(this);    
   }
   
   updateSelection(name){
     // keep track of which option user has selected from nameMatches array
-    console.log(name)
     let updateObject = this.state.nameMatches.filter(nameMatch => nameMatch.name === name)[0];
-    console.log(this.state.ingredients)
+    // if (this.state.quantity === "") {
+    //   throw alert('Please enter an amount!')
+    // }
     updateObject['quantity'] = this.state.quantity
     let newIngredient = this.state.ingredients.concat(updateObject)
     this.setState({
@@ -35,9 +38,13 @@ class Ingredient extends React.Component {
       quantity: '',
       search: '',
       nameMatches: [],
-    });
+    })
   }
-  
+
+  handleClick() {
+    console.log(history)
+    history.push('/instructions')
+  }
   
   
   handleSubmit(e) {
@@ -90,34 +97,36 @@ class Ingredient extends React.Component {
 
   render(){
     return (
-  <Grid celled>
-    <Grid.Row>
-      <Grid.Column width={13}>
-        <form onSubmit={this.handleSubmit}>
-          Search for an Ingredient: <input value = {this.state.search} onChange = {this.onChange}  placeholder='type in an ingredient'/>        
-          <input className='submit' type='submit' value='Search'/>
-          <span> How many grams?   </span><input type='number' value={this.state.quantity} onChange={this.onAmount} placeholder='enter an amount'></input>
-        </form>
-        <h3 className='ingredient-input'>Add an Ingredient</h3>
-        <div>
-          <ul>
-          {this.state.nameMatches.map((nameMatch, i) => <IngredientName object={nameMatch} value={nameMatch.name} key={i} update={this.updateSelection}/>)}
-          </ul>
-        </div>
-      </Grid.Column>
-      <Grid.Column width={6}>
-      <h3 className='ingredient-input'>Your Ingredients!</h3>
-      <ul>
-      {this.state.ingredients.map((ingredient, i) => <li key={i}>{ingredient.name} : {ingredient.quantity}grams</li>)}
-      </ul>
-      </Grid.Column>
-      <Grid.Column floated='right' width={3}>
+      <React.Fragment>
+        <Grid celled>
+          <Grid.Row>
+            <Grid.Column width={13}>
+              <form onSubmit={this.handleSubmit}>
+                Search for an Ingredient: <input value = {this.state.search} onChange = {this.onChange}  placeholder='type in an ingredient'/>        
+                <input className='submit' type='submit' value='Search'/>
+                <span> How many grams?   </span><input type='number' value={this.state.quantity} onChange={this.onAmount} placeholder='enter an amount'></input>
+              </form>
+              <h3 className='ingredient-input'>Add an Ingredient</h3>
+              <div>
+                <ul>
+                {this.state.nameMatches.map((nameMatch, i) => <IngredientName object={nameMatch} value={nameMatch.name} key={i} update={this.updateSelection}/>)}
+                </ul>
+              </div>
+            </Grid.Column>
+            <Grid.Column width={6}>
+            <h3 className='ingredient-input'>Your Ingredients!</h3>
+            <ul>
+            {this.state.ingredients.map((ingredient, i) => <li key={i}>{ingredient.name}  {ingredient.quantity ? ' : ' + ingredient.quantity + ' grams' : ''}</li>)}
+            </ul>
+            </Grid.Column>
+            <Grid.Column floated='right' width={3}>
 
-        <RecipeSuggestion/>
-        {/* <Image src='https://react.semantic-ui.com/images/wireframe/centered-paragraph.png' /> */}
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
+              <RecipeSuggestion/>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <Link className='ui fluid large teal submit button' to='/instructions'>Move to Instructions</Link>
+    </React.Fragment>
     )
   }
 }

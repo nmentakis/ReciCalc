@@ -4,7 +4,8 @@ import { Card, CardGroup, Button } from 'semantic-ui-react';
 
 const RecipeListItem = ({recipe, deleteOne}) => (
     <Card raised>
-    <Card.Content
+      <Card.Content
+        href={`/recipes/${recipe.id}`}
         header={recipe.name}
         meta={recipe.name}
         description={recipe.description}

@@ -9,12 +9,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/../client/dist'));
 
-require('./passport');
+require('./passport')
 
 // CONTROLLERS
 
-app.use('/user', passport.authenticate('jwt', { session: false }), user);
-app.use('/auth', auth);
+app.use('/user', passport.authenticate('jwt', {session: false}), user);
+app.use('/auth', auth)
 
 // FALLBACK ROUTE
 // React Router is a Client Side Router (CSR)

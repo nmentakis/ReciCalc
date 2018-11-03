@@ -35,9 +35,9 @@ const isValidRecipe = (recipe) => {
   if (typeof recipe.title !== 'string') {
     return false;
   }
-  if (Array.isArray(recipe.instructions) === false) {
-    return false;
-  }
+  // if (Array.isArray(recipe.instructions) === false) {
+  //   return false;
+  // }
   if (Array.isArray(recipe.ingredients) === false) {
     return false;
   }
@@ -47,5 +47,5 @@ const isValidRecipe = (recipe) => {
   return true;
 };
 
-module.exports.isValidRecipe = isValidRecipe;
+module.exports.isValidRecipe = isValidRecipe
 module.exports.isValidNdbno = isValidNdbno;

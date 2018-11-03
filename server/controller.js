@@ -4,6 +4,9 @@ const db = require("../database/db.js");
 const axios = require("axios");
 const qs = require("qs");
 const format = require("../helpers/formatCheckers.js");
+const bcrypt = require('bcrypt');
+
+
 
 
 module.exports.recipes = {
@@ -48,14 +51,16 @@ module.exports.recipes = {
         });
     }
   },
-  post: (req, res) => {
+  post: async (req, res) => {
     //Store recipe in database
-    console.log('Incoming recipe request. Recipe:');
+    //console.log('Incoming recipe request. Recipe:');
     let recipe = req.body.recipe;
-    console.log(recipe, '<<<<<<<<------------ recepie');
-    if(format.isValidRecipe(recipe) === false) {
-      res.status(400).send('Malformed recipe');
-    } else {
+    //console.log(recipe);
+    // if (format.isValidRecipe(recipe) === false) {
+    //   res.status(400).send("Malformed recipe");
+    // } else {
+      console.log('Inside controller trying to write recipe', recipe);
+    //  await recipe.ingredients.map(ingredient => db.addIngredient(ingredient));
       db.addRecipe(recipe)
         .then(data => {
           res.status(201).json({ newRecipeId: data });
@@ -73,7 +78,7 @@ module.exports.recipes = {
             res.status(500).send();
           }
         });
-    }
+    // }
   },
 
 };
@@ -87,7 +92,6 @@ module.exports.ingredients = {
     } else {
       db.searchIngredientsByName(req.query.searchTerm)
         .then(ingredients => {
-          console.log(ingredients);
           res.status(200).json(ingredients);
         })
         .catch(err => {
@@ -103,7 +107,6 @@ module.exports.ingredients = {
     //also expect it may have 'page'
     //console.log('looking for USDA ingredients by name: ' + req.query.searchTerm)
     let offset = req.query.page ? req.query.page * 8 : 0;
-
 
     axios
       .get(`https://api.nal.usda.gov/ndb/search/?`, {
@@ -140,7 +143,7 @@ module.exports.ingredients = {
       .get("https://api.nal.usda.gov/ndb/nutrients/?", {
         params: {
           format: "JSON",
-          api_key: `${API_KEY}`,
+          api_key: `A1ENnX84cOUEPD2o8uk8KevT2gCqy111m0X4ukMK`,
           nutrients: [
             "208",
             "204",
@@ -159,18 +162,16 @@ module.exports.ingredients = {
         }
       })
       .then(data => {
+        console.log(data)
         if (data.data.errors) {
           res.status(500).send(data.data.errors.error);
         } else {
-          // console.log(data.data.report.foods[0], ' this is data <<<<<<<<<<<<<');
-          db.addIngredient(data.data.report.foods[0])
-            .then(() => res.status(200).send(data.data.report.foods[0]))
-
-            .catch((err) => {
-              console.log('ERROR: database ', err);
+          res.status(200).send(data.data.report.foods[0])
+            .catch(err => {
+              console.log("ERROR: ", err);
               res
                 .status(500)
-                .send('Data fetched, but not stored to database. Try again.')
+                .send("Data fetched, but not stored to database. Try again.");
             });
         }
       })
@@ -186,10 +187,70 @@ module.exports.ingredients = {
   }
 };
 
+module.exports.auth = {
+  changeUsername: (req, response) => {
+    newUsername = req.body.newUsername;
+    username = req.body.username;
+    password = req.body.password;
+    console.log({username, newUsername, password})
 
+    db.findUser(username, (err, user) => {
+      if(err || !user){
+        console.log('something went wrong while changing username');
+        response.end('something went wrong while changing username')
+      }
+      bcrypt.compare(password, user[0].password, (err, res) => {
+        if(!res || err){
+          // res.status(400).send('Wrong Password');
+          console.log('Wrong Password')
+          response.status(400).end('Wrong Password')
+        }
+        if(res){
+          console.log('found user!', res)
+          //change username here.
+          db.changeUsername(user[0].username, newUsername, (err, res)=>{
+            if(err){
+              console.log('Username Already exists')
+              response.status(400).end('Username already exists')
+            }
 
+            response.status(201).end('changed username')
+          })
+        }
+      })
+    })
+    // response.end();
+  },
 
+  changePassword: (req, response) => {
+    newPassword = req.body.newPassword;
+    password = req.body.password;
+    username = req.body.username;
 
+    db.findUser(username, (err, user) => {
+      if(err || !user){
+        console.log('something went up while changing password');
+        response.status(404).end('Didnt find user')
+        return;
+      }
+
+      bcrypt.compare(password, user[0].password, (err, res) => {
+        if(!res || err){
+          response.status(400).end('Wrong Password');
+        }
+        if(res){
+          console.log('found user!', res)
+          //change password here.
+          db.changePassword(username, newPassword, (res) =>{
+            response.status(201).end('Successfully Changed Password');
+            console.log(res);
+          })
+        }
+      })
+
+    })
+  }
+}
 //EXAMPLE DATABASE INTERACTION:
 //
 //confirmAccess = function(req, res) => {

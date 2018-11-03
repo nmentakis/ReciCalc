@@ -105,9 +105,7 @@ module.exports.searchIngredientsByName = function(searchString) {
 module.exports.addIngredient = function(usdaIngredient) {
   //takes an ingredient object and stores it to the ingredients table
   //Assuming object is the usda return object's report.foods[0]
-  
   let dbIngredient = parse.usdaIngredientToDatabase(usdaIngredient);
-  console.log(dbIngredient, '<<<<<<<<<<<<<<<<<<<<< db');
   return knex('ingredients')
     .insert(dbIngredient)
     .catch(err => {
@@ -126,18 +124,18 @@ module.exports.addRecipeIngredient = function(recipeIngredient) {
 }
 
 module.exports.addRecipe = function(clientRecipe) {
-  //takes a recipe object, adds the basic data to the db, then adds recipe ingredients 
+  //takes a recipe object, adds the basic data to the db, then adds recipe ingredients
+  console.log('db saving recipe', clientRecipe ); 
   let outerRecipeId = '';
   return knex.transaction(trx => {
-    // declare object inserted into recipe
     const dbRecipe = {
       name: clientRecipe.title,
       description: clientRecipe.description,
       top_ingredients: clientRecipe.topIngredients,
+      ingredients: JSON.stringify(clientRecipe.ingredients),
       instructions: JSON.stringify(clientRecipe.instructions),
-      user_id: clientRecipe.userId
+      user_id: clientRecipe.userId,
     };
-    // declare object inserted into ingrtedient
     const dbIngredientJunction = clientRecipe.ingredients.map((ing, index) =>  {
       return {
         food_no: parseInt(ing.ndbno),
@@ -150,21 +148,20 @@ module.exports.addRecipe = function(clientRecipe) {
     return trx
       .insert(dbRecipe)
       .into('recipes')
-      .returning('id')
-      .then(recipeId => {
-        outerRecipeId = recipeId[0];
-        //console.log('recipe ID: ', recipeId)
-        dbIngredientJunction.forEach(entry => {
-          entry.recipe_id = recipeId[0];
-        })
-        return trx
-          .insert(dbIngredientJunction)
-          .into('recipe_ingredients');
-      })
-      .then(() => outerRecipeId);
+      // .returning('id')
+      // .then(recipeId => {
+      //   outerRecipeId = recipeId[0];
+      //   //console.log('recipe ID: ', recipeId)
+      //   dbIngredientJunction.forEach(entry => {
+      //     entry.recipe_id = recipeId[0]
+      //   })
+      //   return trx
+      //     .insert(dbIngredientJunction)
+      //     .into('recipe_ingredients');
+      // })
+      // .then(() => outerRecipeId);
   })
 }
-
 
 module.exports.findUser = (username, cb) => {
   console.log('Inputed username: ',username)
@@ -175,8 +172,44 @@ module.exports.findUser = (username, cb) => {
     cb(null, user)
   })
   .catch(err => {
-    console.log('no users found')
-    cb('Failed', null)
+    console.log('no users found ')
+    cb(err, null)
   })
 }
 
+module.exports.findUserJWT = (username, password, cb) => {
+  console.log('Inputed username: ',username)
+  knex.select('*')
+  .from('users')
+  .where({username})
+  .then((user) =>{
+    cb(null, user)
+  })
+  .catch(err => {
+    console.log('no users found ')
+    cb(err, null)
+  })
+}
+module.exports.changeUsername = (username, newUsername, cb) =>{
+  console.log('newUsername: ', newUsername);
+  knex('users')
+  .where({username})
+  .update({username: newUsername})
+  .then((res) =>{
+    cb(null, res)
+  })
+  .catch(err => {cb(err,null)})
+
+}
+module.exports.changePassword = (username, newPassword, cb) =>{
+  console.log('newUsername: ', newPassword);
+  bcrypt.hash(newPassword, 10, (err, hash)=>{
+    knex('users')
+    .where({username})
+    .update({password: hash})
+    .then((res) =>{
+      cb(res)
+    })
+  })
+
+}

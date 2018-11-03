@@ -3,7 +3,7 @@ import { Grid, Image, Container, Header } from 'semantic-ui-react';
 import RecipeSuggestion from './RecipeSuggestion.jsx';
 import axios from 'axios';
 import IngredientName from './IngredientName.jsx';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import parser from '../../../helpers/parsers.js'
 
 class Ingredient extends React.Component {
@@ -43,10 +43,11 @@ class Ingredient extends React.Component {
     });
   }
 
-  handleClick() {
+  handleClick(e) {
+    e.preventDefault();
     console.log(history)
     this.props.saveIngredients(this.state.ingredients);
-    history.push('/instructions')
+    this.props.history.push('/instructions')
   }
 
   handleSubmit(e) {
@@ -179,4 +180,4 @@ class Ingredient extends React.Component {
   }
 }
 
-export default Ingredient;
+export default withRouter(Ingredient);

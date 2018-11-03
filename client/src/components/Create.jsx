@@ -5,8 +5,8 @@ import axios from 'axios';
 
 
 class Create extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       token: localStorage.getItem('Token'),
       userId: 0 || sessionStorage.getItem('userId'),
@@ -41,8 +41,9 @@ class Create extends Component {
     event.preventDefault();
     // if (this.state.isSaved) {
     //   this.toggleSaved();
-    // } else {
-    this.props.saveDescription(this.state.title ? this.state.title : '', this.state.description ? this.state.description : '');
+    // } else 
+    console.log('Inside create page', this.props.saveDescription)
+    this.props.saveDescription(this.state.title , this.state.description);
     if (this.state.title) {
 
       this.updateRecipe(event.target.name, this.state.title);
@@ -51,7 +52,7 @@ class Create extends Component {
     if (this.state.description) {
       this.updateRecipe(event.target.name, this.state.description);
     }
-    location.href = 'ingredients';
+    this.props.history.push('/ingredients');
     console.log(this.state);
   }
 
@@ -245,6 +246,7 @@ class Create extends Component {
                 </div>
                 <button
                   className="ui fluid large teal submit button"
+                  onClick={this.handleSubmit}
                   rel="stylesheet"
                   to="/ingredients"
                   type="submit"

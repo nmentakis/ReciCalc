@@ -30,8 +30,8 @@ class App extends Component {
       token: null,
       userId: null,
       username: null,
-      title: null,
-      description: null,
+      title: '',
+      description: '',
       ingredients: [],
       instructions: [],
     };
@@ -58,7 +58,7 @@ class App extends Component {
 
 
   saveInstructions(instructions){
-    this.setState({intructions});
+    this.setState({instructions});
   }
 
   saveDescription(title, description){
@@ -112,9 +112,9 @@ class App extends Component {
             />
             <Route
               path="/create"
-              render={() =>
+              render={(props) =>
                 localStorage.getItem('Token') ? (
-                  <Create saveDescription={this.saveDescription} newState={this.state}/>
+                  <Create {...props} saveDescription={this.saveDescription} newState={this.state}/>
                 ) : (
                   <Redirect to="/login" />
                 )
@@ -140,19 +140,20 @@ class App extends Component {
             />
             <Route
               path="/ingredients"
-              render={() =>
+              render={(props) =>
                 localStorage.getItem('Token') ? (
-                  <Ingredient saveIngredients={this.saveIngredients}/>
+                  <Ingredient {...props} saveIngredients={this.saveIngredients}/>
                 ) : (
                   <Redirect to="/login" />
                 )
               }
             />
+
             <Route
               path="/instructions"
-              render={() =>
+              render={(props) =>
                 localStorage.getItem('Token') ? (
-                  <Instruction saveInstructions={this.saveInstructions}/>
+                  <Instruction {...props }saveInstructions={this.saveInstructions}/>
                 ) : (
                   <Redirect to="/login" />
                 )

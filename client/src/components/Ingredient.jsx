@@ -22,23 +22,22 @@ class Ingredient extends React.Component {
     this.getNdbno = this.getNdbno.bind(this);
     this.updateSelection = this.updateSelection.bind(this);
     this.handleClick = this.handleClick.bind(this)
+    this.postToDatabase = this.postToDatabase.bind(this)
     // this.onKeyPress = this.onKeyPress.bind(this);    
   }
   
-  updateSelection(name){
+  async updateSelection(name){
     // keep track of which option user has selected from nameMatches array
     let updateObject = this.state.nameMatches.filter(nameMatch => nameMatch.name === name)[0];
     updateObject['quantity'] = this.state.quantity
+    await this.postToDatabase(updateObject)
     let newIngredient = this.state.ingredients.concat(updateObject)
     this.setState({
       ingredients: newIngredient,
       quantity: '',
       search: '',
       nameMatches: [],
-    }, () => {
-      console.log((updateObject))
     })
-   
   }
 
   handleClick() {
@@ -99,7 +98,8 @@ class Ingredient extends React.Component {
     console.log(selection.ndbno)
     axios.get(`user/ingredients/usda/${selection.ndbno}/?Token=${this.state.token}`)
       .then(data => {
-        return(data);
+        console.log(data.data.nutrients)
+        selection['nutrients'] = data.data.nutrients;
       })
       .catch(error => {
         console.log(error);

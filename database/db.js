@@ -31,53 +31,18 @@ module.exports.fetchRecipeById = function(recipeId) {
   //return the recipe and all relevant accompanying information
 
   const queriesNeeded = [
-    knex
-      .select("*")
-      .from("recipes")
-      .where({ id: recipeId }),
-    knex
-      .select({
-        quantity: "recipe_ingredients.quantity",
-        position: "recipe_ingredients.list_position",
-        ndbno: "ingredients.ndbno",
-        name: "ingredients.name",
-        stdAmount: "ingredients.std_amount",
-        kcalPer: "ingredients.kcal_per",
-        fatPer: "ingredients.fat_per",
-        satFatPer: "ingredients.sat_fat_per",
-        fiberPer: "ingredients.fiber_per",
-        cholesterolPer: "ingredients.cholesterol_per",
-        sodiumPer: "ingredients.sodium_per",
-        carbsPer: "ingredients.carbs_per",
-        sugarPer: "ingredients.sugar_per",
-        proteinPer: "ingredients.protein_per"
-      })
-      .from("recipe_ingredients")
-      .join(
-        "ingredients",
-        "recipe_ingredients.food_no",
-        "=",
-        "ingredients.ndbno"
-      )
-      .where({ "recipe_ingredients.recipe_id": recipeId })
-      .orderBy("recipe_ingredients.list_position", "asc")
-  ];
-  return Promise.all(queriesNeeded).then(data => {
-    if (data[0][0]) {
-      return parse.databaseFullRecipeToClient(data);
-    } else {
-      return { status: "No Such Recipe" };
-    }
-  });
+    knex.select('*').from('recipes').where({id: recipeId}),
+  ]; 
+  return Promise
+    .all(queriesNeeded)
+    .then(data => {
+      if(data) {
+        return (data);
+      } else {
+        return {status: 'No Such Recipe'};
+      }
+    });
 };
-
-// old version - very very stupid, but it works for sure
-//module.exports.searchIngredientsByName = function(searchString) {
-//  //look for ingredients that might be the target and return them
-//  return knex.select('*')
-//    .from('ingredients')
-//    .where('name', 'ilike', '%'+searchString+'%');
-//};
 
 module.exports.searchIngredientsByName = function(searchString) {
   const strings = searchString
@@ -139,13 +104,15 @@ module.exports.addRecipeIngredient = function(recipeIngredient) {
 
 module.exports.addRecipe = function(clientRecipe) {
   //takes a recipe object, adds the basic data to the db, then adds recipe ingredients
-  let outerRecipeId = "";
+  let outerRecipeId = '';
   return knex.transaction(trx => {
     const dbRecipe = {
       name: clientRecipe.title,
       description: clientRecipe.description,
       top_ingredients: clientRecipe.topIngredients,
-      instructions: JSON.stringify(clientRecipe.instructions)
+      ingredients: JSON.stringify(clientRecipe.ingredients),
+      instructions: JSON.stringify(clientRecipe.instructions),
+      user_id: clientRecipe.userId,
     };
     const dbIngredientJunction = clientRecipe.ingredients.map((ing, index) => {
       return {
@@ -158,19 +125,9 @@ module.exports.addRecipe = function(clientRecipe) {
 
     return trx
       .insert(dbRecipe)
-      .into("recipes")
-      .returning("id")
-      .then(recipeId => {
-        outerRecipeId = recipeId[0];
-        //console.log('recipe ID: ', recipeId)
-        dbIngredientJunction.forEach(entry => {
-          entry.recipe_id = recipeId[0];
-        });
-        return trx.insert(dbIngredientJunction).into("recipe_ingredients");
-      })
-      .then(() => outerRecipeId);
-  });
-};
+      .into('recipes')
+  })
+}
 
 module.exports.findUser = (username, cb) => {
   knex

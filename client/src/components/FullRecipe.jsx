@@ -10,34 +10,35 @@ class FullRecipe extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.match.params.id)
     // make call to database for particular recipe referencing {this.props.match.params.id} to retrieve recipe by id number
     // recipe object returned in format below. hardcoding example for testing
     axios.get(`/user/recipes/${this.props.match.params.id}/?Token=${this.state.token}`).then(response => {
-      console.log('successful fullrecipe.jsx request',response.data);
+      console.log('successful fullrecipe.jsx request', response.data[0][0].ingredients);
       this.setState({
         recipe: {
-          title: response.data.title,
-          id: this.props.match.params.id,
-          description: response.data.description,
-          topIngredients: response.data.topIngredients,
-          ingredients: response.data.ingredients ? response.data.ingredients.map(ingredient => {
+          title: response.data[0][0].title,
+          id: response.data[0][0].id,
+          description: response.data[0][0].description,
+          topIngredients: response.data[0][0].topIngredients,
+          ingredients: response.data[0][0].ingredients ? response.data[0][0].ingredients.map(ingredient => {
             return {
               name: ingredient.name,
               ndbno: ingredient.ndbno,
               quantity: ingredient.quantity,
               nutrition: {
-                kcalPer: parseFloat(ingredient.nutrition.kcalPer),
-                fatPer: parseFloat(ingredient.nutrition.fatPer),
-                satFatPer: parseFloat(ingredient.nutrition.satFatPer),
-                fiberPer: parseFloat(ingredient.nutrition.fiberPer),
-                cholesterolPer: parseFloat(ingredient.nutrition.cholesterolPer),
-                sodiumPer: parseFloat(ingredient.nutrition.sodiumPer),
-                carbsPer: parseFloat(ingredient.nutrition.carbsPer),
-                sugarPer: parseFloat(ingredient.nutrition.sugarPer),
-                proteinPer: parseFloat(ingredient.nutrition.proteinPer)
+                kcalPer: parseFloat(ingredient.nutrients.kcal_per),
+                fatPer: parseFloat(ingredient.nutrients.fat_per),
+                satFatPer: parseFloat(ingredient.nutrients.sat_fat_per),
+                fiberPer: parseFloat(ingredient.nutrients.fiber_per),
+                cholesterolPer: parseFloat(ingredient.nutrients.cholesterol_per),
+                sodiumPer: parseFloat(ingredient.nutrients.sodium_per),
+                carbsPer: parseFloat(ingredient.nutrients.carbs_per),
+                sugarPer: parseFloat(ingredient.nutrients.sugar_per),
+                proteinPer: parseFloat(ingredient.nutrients.protein_per)
               }
           }}) : [],
-          instructions: response.data.instructions ? response.data.instructions : []
+          instructions: response.data[0][0].instructions
         }
       })
     })
@@ -80,7 +81,7 @@ class FullRecipe extends Component {
     } else {
       let nutritionObject = this.calculateNutrition();
       return (
-        <div class="ui stacked secondary  segment" id="full-recipe">
+        <div className="ui stacked secondary  segment" id="full-recipe">
           <h3>{recipe.title}</h3>
           <p id='full-description'>{recipe.description}</p>
           <ul className='full-list'>
@@ -90,9 +91,7 @@ class FullRecipe extends Component {
           </ul>
           <ol className='full-list'>
             <h4>Instructions:</h4>
-            {recipe.instructions.map((instruction, index) =>
-              <li key={index}>{instruction}</li>  
-            )}
+            {recipe.instructions}
           </ol>
           <div id='nutrition'>
             <h4>Nutrition Information:</h4>

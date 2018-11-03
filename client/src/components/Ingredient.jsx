@@ -1,9 +1,9 @@
 import React from 'react';
-import { Grid, Image, Container, Header } from 'semantic-ui-react';
+import { Grid, Image, Container, Header, Button } from 'semantic-ui-react';
 import RecipeSuggestion from './RecipeSuggestion.jsx';
 import axios from 'axios';
 import IngredientName from './IngredientName.jsx';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import parser from '../../../helpers/parsers.js'
 
 class Ingredient extends React.Component {
@@ -43,14 +43,15 @@ class Ingredient extends React.Component {
     });
   }
 
-  handleClick() {
-    console.log(history);
-    history.push('/instructions');
+  handleClick(e) {
+
+    e.preventDefault();
+    this.props.saveIngredients(this.state.ingredients);
+    this.props.history.push('/instructions')
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state.search);
     this.getNdbno(this.state.search);
   }
 
@@ -85,7 +86,6 @@ class Ingredient extends React.Component {
         headers: { Authorization: `Bearer ${localStorage.getItem('Token')}` },
       })
       .then(data => {
-        console.log(data);
         const list = data.data.map(item => {
           return { name: item.name, ndbno: item.ndbno };
         });
@@ -97,21 +97,18 @@ class Ingredient extends React.Component {
   }
 
   postToDatabase(selection) {
-    console.log(selection.ndbno);
     axios
       .get(
         `user/ingredients/usda/${selection.ndbno}/?Token=${this.state.token}`
       )
       .then(data => {
-        console.log(data.data.nutrients);
         selection['nutrients'] = data.data.nutrients;
-        selection['nutrition'] = parser.usdaIngredientToDatabase(selection)
-        delete selection['nutrients'];
-        delete selection['nutrition']['ndbno'];
-        delete selection['nutrition']['name'];
+        selection['nutrients'] = parser.usdaIngredientToDatabase(selection)
+        // delete selection['nutrients']['ndbno'];
+        // delete selection['nutrients']['name'];
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -181,12 +178,13 @@ class Ingredient extends React.Component {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <Link className="ui fluid large teal submit button" to="/instructions">
+        <Button className="ui fluid large teal submit button" onClick={this.handleClick}>Move to Instructions</Button>
+        {/* <Link className="ui fluid large teal submit button" to="/instructions">
           Move to Instructions
-        </Link>
+        </Link> */}
       </React.Fragment>
     );
   }
 }
 
-export default Ingredient;
+export default withRouter(Ingredient);

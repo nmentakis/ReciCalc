@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { Button } from 'semantic-ui-react';
 
 class Instruction extends React.Component {
   constructor(props) {
@@ -7,12 +8,22 @@ class Instruction extends React.Component {
     this.state = {
       instructions: ""
     }
-    this.updateInstructions = this.updateInstructions.bind(this)
+    this.updateInstructions = this.updateInstructions.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
   updateInstructions(e) {
 
     this.setState({ instructions: e.target.value });
   }
+
+  handleClick(e) {
+    e.preventDefault();
+    console.log(history)
+    this.props.saveInstructions(this.state.instructions);
+    this.props.history.push('/recipes')
+  }
+
+
   render() {
     return (
       <div className="ui middle aligned center aligned grid">
@@ -32,12 +43,7 @@ class Instruction extends React.Component {
                   />
                 </div>
               </div>
-              <Link
-                type="submit"
-                className="ui fluid large teal submit button"
-                to="/recipes">
-                Move to Recipes
-              </Link>
+              <Button className="ui fluid large teal submit button" onClick={this.handleClick}>MoveRecipes</Button>
             </div>
             <div className="ui error message" />
           </form>
@@ -47,4 +53,4 @@ class Instruction extends React.Component {
   };
 }
 
-export default Instruction;
+export default withRouter(Instruction);

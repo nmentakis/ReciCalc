@@ -42,9 +42,7 @@ passport.use(new JWTStrategy({
   secretOrKey   : 'Memes are cool'
 },
 function (jwtPayload, cb) {
-  console.log('doing shit')
   db.findUserJWT(jwtPayload.username, jwtPayload.password, function(err, user){
-    console.log('Callback ',user[0])
     if (!user || err) {
       console.log('Ran into issue: ',err, user);
       return cb(err, false, { message: "Failure" });

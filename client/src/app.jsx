@@ -30,10 +30,18 @@ class App extends Component {
       token: null,
       userId: null,
       username: null,
+      title: '',
+      description: '',
+      ingredients: [],
+      instructions: [],
     };
     this.logout = this.logout.bind(this);
     this.renderNav = this.renderNav.bind(this);
     this.setUser = this.setUser.bind(this);
+    this.saveIngredients = this.saveIngredients.bind(this);
+    this.saveInstructions = this.saveInstructions.bind(this);
+    this.saveDescription = this.saveDescription.bind(this);
+    this.postRecipe = this.postRecipe.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +51,46 @@ class App extends Component {
       username: sessionStorage.getItem('username'),
     });
   }
+
+  saveIngredients(ingredients){
+    this.setState({ingredients});
+
+  }
+
+
+  saveInstructions(instructions){
+    this.setState({instructions}, () => {
+      this.postRecipe();
+    });
+  }
+
+  saveDescription(title, description){
+    this.setState({ title, description });
+  }
+
+  postRecipe() {
+ 
+      const recipe = Object.assign({}, this.state);
+      recipe['user_id'] = this.state.userId;
+      // database expects an array of strings for instructions
+        axios
+        .post(`/user/recipes/?Token=${this.state.token}`, {
+          recipe,
+        })
+        .then(response => {
+          // console.log(response);
+          // response contains the database id for the newly created recipe
+          // use this to redirect to the full recipe view for that recipe
+          // (this.props.history.push can be used because component is wrapped by withRouter - see export statement)
+          this.props.history.push(`/ingredients`);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
+  
+
+
 
   setUser(user, id, token) {
     this.setState({
@@ -90,9 +138,9 @@ class App extends Component {
             />
             <Route
               path="/create"
-              render={() =>
+              render={(props) =>
                 localStorage.getItem('Token') ? (
-                  <Create />
+                  <Create {...props} saveDescription={this.saveDescription} newState={this.state}/>
                 ) : (
                   <Redirect to="/login" />
                 )
@@ -118,19 +166,20 @@ class App extends Component {
             />
             <Route
               path="/ingredients"
-              render={() =>
+              render={(props) =>
                 localStorage.getItem('Token') ? (
-                  <Ingredient />
+                  <Ingredient {...props} saveIngredients={this.saveIngredients}/>
                 ) : (
                   <Redirect to="/login" />
                 )
               }
             />
+
             <Route
               path="/instructions"
-              render={() =>
+              render={(props) =>
                 localStorage.getItem('Token') ? (
-                  <Instruction />
+                  <Instruction {...props }saveInstructions={this.saveInstructions} />
                 ) : (
                   <Redirect to="/login" />
                 )

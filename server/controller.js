@@ -50,14 +50,16 @@ module.exports.recipes = {
         });
     }
   },
-  post: (req, res) => {
+  post: async (req, res) => {
     //Store recipe in database
     //console.log('Incoming recipe request. Recipe:');
     let recipe = req.body.recipe;
     //console.log(recipe);
-    if (format.isValidRecipe(recipe) === false) {
-      res.status(400).send("Malformed recipe");
-    } else {
+    // if (format.isValidRecipe(recipe) === false) {
+    //   res.status(400).send("Malformed recipe");
+    // } else {
+      console.log('Inside controller trying to write recipe', recipe);
+    //  await recipe.ingredients.map(ingredient => db.addIngredient(ingredient));
       db.addRecipe(recipe)
         .then(data => {
           res.status(201).json({ newRecipeId: data });
@@ -75,8 +77,9 @@ module.exports.recipes = {
             res.status(500).send();
           }
         });
-    }
-  }
+    // }
+  },
+
 };
 
 module.exports.ingredients = {

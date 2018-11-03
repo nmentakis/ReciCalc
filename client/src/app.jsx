@@ -74,7 +74,7 @@ class App extends Component {
             <Route exact path = '/' render={() => <Landing />} /> 
             <Route path='/recipes' render={()=> localStorage.getItem('Token') ? ( <Recipes/> ) : ( <Redirect to="/login"/> )} />
             <Route path='/create' render={()=>  localStorage.getItem('Token') ? ( <Create/> ) : ( <Redirect to="/login"/> )} />
-            <Route path='/account' render={()=> localStorage.getItem('Token') ? ( <Account/> ) : ( <Redirect to="/login"/> )} />
+            <Route path='/account' render={()=> localStorage.getItem('Token') ? ( <Account logout={this.logout}/> ) : ( <Redirect to="/login"/> )} />
             <Route path='/login' render={(props)=> <Login {...props} setUser={this.setUser} /> } />
             <Route path='/signup' render={(props)=> <Signup {...props} setUser={this.setUser} /> }/>
             <Route path='/ingredients' render={()=> localStorage.getItem('Token') ? ( <Ingredient/> ) : ( <Redirect to="/login"/> )} />

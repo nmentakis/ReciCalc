@@ -12,7 +12,7 @@ exports.up = function(knex, Promise) {
     table.text('description');
     table.json('ingredients');
     table.text('top_ingredients');
-    table.json('instructions');
+    table.text('instructions');
     table.integer('user_id').references('id').inTable('users').notNull();
     table.timestamps();
   })

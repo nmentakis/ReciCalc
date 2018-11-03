@@ -9,9 +9,10 @@ const RecipeListItem = ({recipe, deleteOne}) => (
         description={
           <div>
           <ul>
-            {recipe.ingredients.map(ingredient => (<li>{ingredient}</li> ))}
+            {recipe.ingredients.map((ingredient,i) => (<li key={i}>{ingredient.name}</li> ))}
           </ul>
-          <p>{recipe.description}</p> </div>}
+          <p>{JSON.stringify(recipe.description)}</p> </div>
+          }
       />
       <Card.Content extra>
         <div className='ui two buttons'>

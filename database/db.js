@@ -29,32 +29,32 @@ module.exports.fetchRecipeById = function(recipeId) {
   
   const queriesNeeded = [
     knex.select('*').from('recipes').where({id: recipeId}),
-    knex.select({
-        quantity: 'recipe_ingredients.quantity',
-        position: 'recipe_ingredients.list_position',
-        ndbno: 'ingredients.ndbno',
-        name: 'ingredients.name',
-        stdAmount: 'ingredients.std_amount',
-        kcalPer: 'ingredients.kcal_per',
-        fatPer: 'ingredients.fat_per',
-        satFatPer: 'ingredients.sat_fat_per',
-        fiberPer: 'ingredients.fiber_per',
-        cholesterolPer: 'ingredients.cholesterol_per',
-        sodiumPer: 'ingredients.sodium_per',
-        carbsPer: 'ingredients.carbs_per',
-        sugarPer: 'ingredients.sugar_per',
-        proteinPer: 'ingredients.protein_per'
-      })
-      .from('recipe_ingredients')
-      .join('ingredients', 'recipe_ingredients.food_no', '=', 'ingredients.ndbno')
-      .where({'recipe_ingredients.recipe_id': recipeId})
-      .orderBy('recipe_ingredients.list_position', 'asc')
+    // knex.select({
+    //     quantity: 'ingredients.quantity',
+    //     // position: 'recipe_ingredients.list_position',
+    //     ndbno: 'ingredients.ndbno',
+    //     name: 'ingredients.name',
+    //     stdAmount: 'ingredients.std_amount',
+    //     kcalPer: 'ingredients.kcal_per',
+    //     fatPer: 'ingredients.fat_per',
+    //     satFatPer: 'ingredients.sat_fat_per',
+    //     fiberPer: 'ingredients.fiber_per',
+    //     cholesterolPer: 'ingredients.cholesterol_per',
+    //     sodiumPer: 'ingredients.sodium_per',
+    //     carbsPer: 'ingredients.carbs_per',
+    //     sugarPer: 'ingredients.sugar_per',
+    //     proteinPer: 'ingredients.protein_per'
+    //   })
+    //   .from('ingredients')
+      // .join('ingredients', 'recipe_ingredients.food_no', '=', 'ingredients.ndbno')
+      // .where({'recipe_ingredients.recipe_id': recipeId})
+      // .orderBy('recipe_ingredients.list_position', 'asc')
   ]; 
   return Promise
     .all(queriesNeeded)
     .then(data => {
-      if(data[0][0]) {
-        return parse.databaseFullRecipeToClient(data);
+      if(data) {
+        return (data);
       } else {
         return {status: 'No Such Recipe'};
       }

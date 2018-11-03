@@ -18,7 +18,7 @@ class RecipeList extends Component {
     }
 
   componentDidMount(){
-    this.getSavedRecipes();
+    setTimeout(this.getSavedRecipes, 100);
   }
 
   componentDidUpdate(prevProps, prevState){

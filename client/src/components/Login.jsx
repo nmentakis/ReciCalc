@@ -4,7 +4,7 @@ import axios from 'axios';
 import { withFormik, Form, Field } from 'formik';
 
 const Login = () => (
-  <div className="ui middle aligned center aligned grid">
+  <div className="ui middle aligned center aligned grid" id="login-signup">
     <div className="column">
       <h2 className="ui header">
         <div className="content">Log-in to your account</div>

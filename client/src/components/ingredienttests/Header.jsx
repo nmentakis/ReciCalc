@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
 // refactor to functional component?
-class Header extends Component {
+class HeaderBanner extends Component {
   constructor() {
       super();
       this.state = {
@@ -13,10 +13,8 @@ class Header extends Component {
   render () {
       return (
       <div>
-        <h3 id='header-logo' className='logo'>RECI-CALC</h3>
-          <Link className='nav link' to='/create'>Create New Recipe</Link>
-          <Link className='nav link' to='/recipes'>Recipes</Link>
+        <h3 id='headerBanner' className='logo'/>
       </div>)
   }
 }
-export default Header;
+export default HeaderBanner;

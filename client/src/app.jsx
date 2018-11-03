@@ -29,10 +29,17 @@ class App extends Component {
       token: null,
       userId: null,
       username: null,
+      title: null,
+      description: null,
+      ingredients: [],
+      instructions: [],
     };
     this.logout = this.logout.bind(this);
     this.renderNav = this.renderNav.bind(this);
     this.setUser = this.setUser.bind(this);
+    this.saveIngredients = this.saveIngredients.bind(this);
+    this.saveInstructions = this.saveInstructions.bind(this);
+    this.saveDescription = this.saveDescription.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +49,21 @@ class App extends Component {
       username: sessionStorage.getItem('username'),
     });
   }
+
+  saveIngredients(ingredients){
+    this.setState({ingredients});
+
+  }
+
+
+  saveInstructions(instructions){
+    this.setState({intructions});
+  }
+
+  saveDescription(title, description){
+    this.setState({ title, description });
+  }
+
 
   setUser(user, id, token) {
     this.setState({
@@ -86,7 +108,7 @@ class App extends Component {
               path="/create"
               render={() =>
                 localStorage.getItem('Token') ? (
-                  <Create />
+                  <Create saveDescription={this.saveDescription} newState={this.state}/>
                 ) : (
                   <Redirect to="/login" />
                 )
@@ -114,7 +136,7 @@ class App extends Component {
               path="/ingredients"
               render={() =>
                 localStorage.getItem('Token') ? (
-                  <Ingredient />
+                  <Ingredient saveIngredients={this.saveIngredients}/>
                 ) : (
                   <Redirect to="/login" />
                 )
@@ -124,7 +146,7 @@ class App extends Component {
               path="/instructions"
               render={() =>
                 localStorage.getItem('Token') ? (
-                  <Instruction />
+                  <Instruction saveInstructions={this.saveInstructions}/>
                 ) : (
                   <Redirect to="/login" />
                 )

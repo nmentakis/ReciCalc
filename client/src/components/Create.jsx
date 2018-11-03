@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 // withRouter used to redirect to a different url within a function
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 
 class Create extends Component {
@@ -43,7 +42,9 @@ class Create extends Component {
     // if (this.state.isSaved) {
     //   this.toggleSaved();
     // } else {
+    this.props.saveDescription(this.state.title ? this.state.title : '', this.state.description ? this.state.description : '');
     if (this.state.title) {
+
       this.updateRecipe(event.target.name, this.state.title);
     }
 
@@ -249,6 +250,7 @@ class Create extends Component {
                   value="Submit">
                   Add Ingredients
                 </button>
+                {/* <Link to={{ pathname: '/ingredients', state: { updateRecipe } }}>My route</Link> */}
                 {/* </div> */}
               </div>
               <div className="ui error message" />

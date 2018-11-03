@@ -42,6 +42,7 @@ class Ingredient extends React.Component {
 
   handleClick() {
     console.log(history)
+    this.props.saveIngredients(this.state.ingredients);
     history.push('/instructions')
   }
   

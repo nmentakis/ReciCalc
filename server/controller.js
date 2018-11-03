@@ -185,53 +185,67 @@ module.exports.ingredients = {
 };
 
 module.exports.auth = {
-  changeUsername: (req, res) => {
+  changeUsername: (req, response) => {
     newUsername = req.body.newUsername;
     username = req.body.username;
     password = req.body.password;
     console.log({username, newUsername, password})
 
     db.findUser(username, (err, user) => {
-      if(err){
-        console.log('something went up while changing username');
-        res.end()
+      if(err || !user){
+        console.log('something went wrong while changing username');
+        response.end('something went wrong while changing username')
       }
       bcrypt.compare(password, user[0].password, (err, res) => {
+        if(!res || err){
+          // res.status(400).send('Wrong Password');
+          console.log('Wrong Password')
+          response.status(400).end('Wrong Password')
+        }
         if(res){
           console.log('found user!', res)
           //change username here.
-          db.changeUsername(user[0].username, newUsername, (res)=>{
-            console.log(res)
+          db.changeUsername(user[0].username, newUsername, (err, res)=>{
+            if(err){
+              console.log('Username Already exists')
+              response.status(400).end('Username already exists')
+            }
+
+            response.status(201).end('changed username')
           })
         }
       })
     })
-    res.end();
+    // response.end();
   },
-  changePassword: (req, res) => {
+
+  changePassword: (req, response) => {
     newPassword = req.body.newPassword;
     password = req.body.password;
     username = req.body.username;
 
     db.findUser(username, (err, user) => {
-      if(err){
-        console.log('something went up while changing username');
-        res.end()
+      if(err || !user){
+        console.log('something went up while changing password');
+        response.status(404).end('Didnt find user')
+        return;
       }
+
       bcrypt.compare(password, user[0].password, (err, res) => {
+        if(!res || err){
+          response.status(400).end('Wrong Password');
+        }
         if(res){
           console.log('found user!', res)
           //change password here.
           db.changePassword(username, newPassword, (res) =>{
-            console.log('changed Password')
-
+            response.status(201).end('Successfully Changed Password');
             console.log(res);
           })
         }
       })
+
     })
-    console.log({newPassword, password, username})
-    res.end();
   }
 }
 //EXAMPLE DATABASE INTERACTION:

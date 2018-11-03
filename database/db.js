@@ -193,8 +193,9 @@ module.exports.changeUsername = (username, newUsername, cb) =>{
   .where({username})
   .update({username: newUsername})
   .then((res) =>{
-    cb(res)
+    cb(null, res)
   })
+  .catch(err => {cb(err,null)})
 
 }
 module.exports.changePassword = (username, newPassword, cb) =>{

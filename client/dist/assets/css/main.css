@@ -273,7 +273,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #ffffff;
+  color: #000000;
   font-weight: 600;
   line-height: 1.5;
   margin: 0 0 1rem 0;
@@ -1759,5 +1759,36 @@ body.is-preload #header .content .inner {
 		body.is-preload #footer {
 			opacity: 0;
 		}
+    #headerBanner {
+      background-image: url(../../images/header.jpg);
+      background-size: cover;
+      height: 3.5em;
+      width: 100%;
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      /* box-shadow: #1b1f22; */
+      grid-template-rows: 3fr / 1fr;
+    }
+		#description {
+      height: 10em;
+    }
 
-		
+    #full-recipe {
+     margin: 3em 3em;
+     background-image: url(../../images/purty_wood/purty_wood.png);
+     font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+    .full-list>li {
+      line-height: 1.2;
+      margin-left: 25px;
+  }
+  
+  ol {
+      list-style-type: decimal;
+      list-style-position: inside;
+  }
+
+  #login-signup {
+    padding-top: 4em;
+  }

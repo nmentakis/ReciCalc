@@ -16,10 +16,11 @@ import Signup from './components/Signup.jsx';
 import Login from './components/Login.jsx';
 import NavBar from './components/NavBar.jsx';
 import Account from './components/Account.jsx';
+import HeaderBanner from './components/Header.jsx';
 import Ingredient from './components/Ingredient.jsx';
-import CreateRouter from './components/CreateRouter.jsx';
 
 import { withFormik } from 'formik';
+import { Header } from 'semantic-ui-react';
 
 // could be refactored as a functional component if state not needed
 class App extends Component {
@@ -53,7 +54,12 @@ class App extends Component {
 
   renderNav() {
     if (this.state.token) {
-      return <NavBar logout={this.logout} />;
+      return (
+        <div>
+          <HeaderBanner/>
+          <NavBar logout={this.logout} />
+        </div>
+      );
     } else {
       return;
     }

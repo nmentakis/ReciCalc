@@ -142,7 +142,7 @@ module.exports.ingredients = {
       .get("https://api.nal.usda.gov/ndb/nutrients/?", {
         params: {
           format: "JSON",
-          api_key: `A1ENnX84cOUEPD2o8uk8KevT2gCqy111m0X4ukMK`,
+          api_key: `${API_KEY}`,
           nutrients: [
             "208",
             "204",
